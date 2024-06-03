@@ -14,7 +14,7 @@ export enum Type {
     title
 }
 
-export type Options {
+export type Option = {
     label: string;
     value: string;
 }
@@ -26,7 +26,7 @@ export type FormField = {
     required: boolean;
     type: Type;
     condition?: Condition;
-    options?: Options;
+    options?: Option[];
 }
 
 
