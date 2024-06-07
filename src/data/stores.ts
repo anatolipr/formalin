@@ -1,3 +1,7 @@
-import { Foo } from 'avos/src/foo-store/foo'
+import Foo from 'avos/src/foo-store/foo.js'
+import type { Button, Form, FormSection } from './formConfigTypes'
 
-const x: Foo<
+export const form: Foo<Form>  = new Foo({
+    sections: <FormSection[]>[]
+})
+

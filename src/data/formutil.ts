@@ -1,11 +1,11 @@
 import type { Option } from "./formConfigTypes";
 
 
-export function optionsToText(options: Option[]): string {
+export function optionsToText(options: Option<string>[]): string {
     return options.map(op => `${op.label}: ${op.value}`).join(', ')
 }
 
-export function textToOptions(text: string): Option[] {
+export function textToOptions(text: string): Option<string>[] {
     return text.split(',').map(pairStr => {
         const pair = pairStr.split(/:|=/)
         return {

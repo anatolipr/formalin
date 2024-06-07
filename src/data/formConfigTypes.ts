@@ -3,20 +3,17 @@ export type Condition = {
     requiredValue: string;
 }
 
-export enum Type {
-    text,
-    number,
-    textarea,
-    radio,
-    checkboxes,
-    date,
-    dropdown,
-    title
-}
+type Type = 'text' | 'number' | 'textarea' | 'radio' | 'checkboxes' | 'date' | 'dropdown' | 'title';
+const TypeOptions: [Option<Type>] = [
+    {
+        label: 'Text',
+        value: 'text'
+    }
+]
 
-export type Option = {
+export type Option<T> = {
     label: string;
-    value: string;
+    value: T;
 }
 
 export type FormField = {
@@ -26,7 +23,7 @@ export type FormField = {
     required: boolean;
     type: Type;
     condition?: Condition;
-    options?: Option[];
+    options?: string;
 }
 
 
@@ -43,8 +40,8 @@ export type Button = {
 }
 
 export type Form = {
-    title: string;
-    description: string;
+    title?: string | undefined;
+    description?: string;
     sections: FormSection[];
-    buttons: Button[]
+    buttons?: Button[]
 }
