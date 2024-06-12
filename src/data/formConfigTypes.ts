@@ -23,7 +23,7 @@ export type FormField = {
     required: boolean;
     type: Type;
     condition?: Condition;
-    options?: string;
+    options?: Option<string>[];
 }
 
 
