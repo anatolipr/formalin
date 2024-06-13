@@ -1,4 +1,4 @@
-import type { Option } from "./formConfigTypes";
+import type { Option } from "../type/formConfigTypes";
 
 
 export function optionsToText(options: Option<string>[]): string {

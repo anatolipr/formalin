@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest'
-import { type Option } from './formConfigTypes'
+import { type Option } from '../type/formConfigTypes'
 import { optionsToText, textToOptions } from './formutil';
 
 test('options to text', () => {
