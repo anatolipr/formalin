@@ -39,6 +39,14 @@ export const TypeOptions: Option<Type>[] = [
     }
 ]
 
+//
+const typeSupportOptions: Type[] = 
+['radio', 'checkboxes', 'dropdown'];
+
+export function supportsOptions(type: Type): boolean {
+    return typeSupportOptions.includes(type);
+}
+
 export type Option<T> = {
     label: string;
     value: T;
@@ -52,6 +60,7 @@ export type FormField = {
     type: Type;
     condition?: Condition;
     options?: Option<string>[];
+    value: string;
 }
 
 

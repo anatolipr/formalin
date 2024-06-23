@@ -14,23 +14,17 @@
         updateFieldRequired,
         updateFieldType,
         form,
-
         addEmptyField,
-
         conditionAsOption
-
 
     } from "../data/stores";
 
 
     import Options from "./Options.svelte";
-    import { TypeOptions } from "../data/type/formConfigTypes";
-  import OptionInput from "./OptionInput.svelte";
+    import { TypeOptions, supportsOptions } from "../data/type/formConfigTypes";
+    import OptionInput from "./OptionInput.svelte";
 
     addSection();
-
-
-  
 </script>
 
 <div
@@ -119,15 +113,31 @@
                             on:input="{e => updateFieldName(sectionIndex, fieldIndex, e.target.value)}" />
                     </div>
                     <div class="fieldline">
-                        <div class="form-title">Condition</div>
-                        <OptionInput
-                        value={conditionAsOption(sectionIndex, fieldIndex)}
-                        on:input={e => updateFieldCondition(sectionIndex, fieldIndex, e.detail)} />
+                        <div class="form-title">Default value</div>
+                        <input
+                            class="input-item"
+                            type="text"
+                            value="{$form.sections[sectionIndex].fields[fieldIndex].value}"
+                            on:input="{e => updateFieldValue(sectionIndex, fieldIndex, e.target.value)}" />
                     </div>
                     <div class="fieldline">
-                        <div class="form-title">Optionsxx (label:value, ...)</div>
-                        <Options />
+                        <div class="form-title">Condition</div>
+                        <OptionInput value={conditionAsOption(sectionIndex,
+                        fieldIndex)} on:input={e =>
+                        updateFieldCondition(sectionIndex, fieldIndex,
+                        e.detail)} valuePlaceholder="field name"
+                        labelPlaceholder="expected value" />
                     </div>
+                    {#if
+                    supportsOptions($form.sections[sectionIndex].fields[fieldIndex].type)}
+                    <div class="fieldline">
+                        <div class="form-title">Options</div>
+                        <Options
+                        value={$form.sections[sectionIndex].fields[fieldIndex].options}
+                        on:input={e => updateFieldOptions(sectionIndex,
+                        fieldIndex, e.detail)} />
+                    </div>
+                    {/if}
                     <div class="fieldline">
                         <div class="form-title">required</div>
                         <input

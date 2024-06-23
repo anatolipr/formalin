@@ -12,7 +12,8 @@ function newField(): FormField {
         description: '', 
         type: 'text', 
         fieldName: '', 
-        required: false
+        required: false,
+        value: ''
     }
 }
 
@@ -55,6 +56,13 @@ export function addField(sectionIndex: number, position?:number|undefined, value
             return $form
         })
     }
+}
+
+export function updateFieldValue(sectionIndex: number, fieldIndex: number, value: string) {
+    form.update($form => {
+        $form.sections[sectionIndex].fields[fieldIndex].value = value
+        return $form
+    })
 }
 
 export function removeSection(sectionIndex: number) {
@@ -136,9 +144,9 @@ export function updateFieldRequired(sectionIndex: number, fieldIndex: number, re
     })
 }
 
-export function updateFieldOptions(sectionIndex: number, fieldIndex: number, options: string[]) {
+export function updateFieldOptions(sectionIndex: number, fieldIndex: number, options: Option<string>[]) {
     form.update($form => {
-        $form.sections[sectionIndex].fields[fieldIndex].options = options.map(option => ({label: option, value: option}))
+        $form.sections[sectionIndex].fields[fieldIndex].options = [...options]
         return $form
     })
 }
