@@ -44,6 +44,7 @@
                 <svelte:component on:input={e =>
                 updateFormData($form.sections[sectionIndex].fields[fieldIndex].fieldName,
                 e.detail)}
+                fieldDef={$form.sections[sectionIndex].fields[fieldIndex]}
                 value={$formData[$form.sections[sectionIndex].fields[fieldIndex].fieldName]}
                 this="{typeMap[$form.sections[sectionIndex].fields[fieldIndex].type]}"
                 />

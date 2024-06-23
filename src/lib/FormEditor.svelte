@@ -77,6 +77,13 @@
                                 value="{$form.sections[sectionIndex].description}"
                                 on:input="{(e) => updateSectionDescription(sectionIndex, e.target.value)}"></textarea>
                         </div>
+                        <div class="fieldline">
+                            <div class="form-title">Condition</div>
+                            <OptionInput value={conditionAsOption(sectionIndex)}
+                            on:input={e => updateSectionCondition(sectionIndex,
+                            e.detail)} valuePlaceholder="field name"
+                            labelPlaceholder="expected value" />
+                        </div>
                         <div
                             style="padding: 16px; flex-direction: column; gap: 20px; display: flex">
                             <div style="font-size: 25px; font-weight: 200">

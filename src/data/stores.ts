@@ -101,6 +101,13 @@ export function updateSectionDescription(sectionIndex: number, description: stri
     })
 }
 
+export function updateSectionCondition(sectionIndex: number, condition: Condition) {
+    form.update($form => {
+        $form.sections[sectionIndex].condition = condition
+        return $form
+    })
+}
+
 export function updateFieldLabel(sectionIndex: number, fieldIndex: number, label: string) {
     form.update($form => {
         $form.sections[sectionIndex].fields[fieldIndex].label = label
@@ -108,13 +115,24 @@ export function updateFieldLabel(sectionIndex: number, fieldIndex: number, label
     })
 }
 
-export function conditionAsOption(sectionIndex: number, fieldIndex: number): Option<string> {
+export function conditionAsOption(sectionIndex: number, fieldIndex?: number): Option<string> {
     const $form = form.get()
-    return {
-        label: $form.sections[sectionIndex].fields[fieldIndex].condition?.fieldName || "",
-        value: $form.sections[sectionIndex].fields[fieldIndex].condition?.requiredValue || ""
-    } as Option<string>;
-  }
+
+    if (fieldIndex === undefined) {
+        return {
+            label: $form.sections[sectionIndex].condition?.fieldName || "",
+            value: $form.sections[sectionIndex].condition?.requiredValue || ""
+        } as Option<string>;
+    } else {
+        return {
+            label: $form.sections[sectionIndex].fields[fieldIndex].condition?.fieldName || "",
+            value: $form.sections[sectionIndex].fields[fieldIndex].condition?.requiredValue || ""
+        } as Option<string>;
+    }
+    
+}
+
+
 
 export function updateFieldCondition(sectionIndex: number, fieldIndex: number, condition: Option<string>) {
     form.update($form => {

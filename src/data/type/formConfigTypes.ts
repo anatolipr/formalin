@@ -75,6 +75,7 @@ export type FormField = {
 export type FormSection = {
     title: string;
     description: string;
+    condition?: Condition;
     fields: FormField[]
 }
 
