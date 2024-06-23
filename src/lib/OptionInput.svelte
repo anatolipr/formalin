@@ -17,20 +17,21 @@
         value.label = newLabel;
         dispatch('input', value)
     }
-    
+
     export function focus() {
         input?.focus();
     }
 </script>
 
 <div style="display: flex; flex-direction: column">
-    <input bind:this="{input}"
+    <input
         class="option-inputs opton-top-input"
         type="text"
         placeholder="{valuePlaceholder ? valuePlaceholder : 'value'}"
         value="{value.value}"
         on:input="{(e) => updateValue(e.target.value)}"
-        on:keydown="{(e) => dispatch('keydown', e)}" />
+        on:keydown="{(e) => dispatch('keydown', e)}"
+        bind:this="{input}" />
     <input
         class="option-inputs option-bottom-input"
         type="text"

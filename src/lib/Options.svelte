@@ -14,7 +14,7 @@
     let inputs: OptionInput[] = [];
 
     const dispatch = createEventDispatcher();
-    
+
 
     async function addAfter(index: number) {
         value = [...value.slice(0, index + 1), {label: '', value: ''}, ...value.slice(index + 1)];
@@ -61,7 +61,7 @@
     }
 
     function keydown(e: KeyboardEvent, index: number) {
-        
+
         if (!e.altKey) return;
 
         if (e.key === 'ArrowUp') {
@@ -80,17 +80,12 @@
     if (inputs.length > 0) {
         inputs[0].focus();
     }
-
 </script>
 
 <div style="position: relative" class="options-wrap">
-    {#each value as option, index} 
-    <OptionInput value="{option}" 
-    
-    bind:this={inputs[index]}
-    on:input={(e) => updateOption(index, e.detail)}
-    on:keydown={(e) => keydown(e.detail, index)}
-    /> {/each}
+    {#each value as option, index} <OptionInput value="{option}"
+    bind:this={inputs[index]} on:input={(e) => updateOption(index, e.detail)}
+    on:keydown={(e) => keydown(e.detail, index)} /> {/each}
     <button class="attr-btn" type="button" on:click="{add}">Add</button>
 </div>
 
