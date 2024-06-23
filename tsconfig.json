@@ -4,6 +4,7 @@
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     /**
      * Typecheck JS in `.svelte` and `.js` files by default.
@@ -11,7 +12,7 @@
      * Note that setting allowJs false does not prevent the use
      * of JS in `.svelte` files.
      */
-    "allowJs": false,
+    "allowJs": true,
     "checkJs": true,
     "isolatedModules": true
   },

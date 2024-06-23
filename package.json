@@ -10,15 +10,14 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^3.1.0",
     "@tsconfig/svelte": "^5.0.4",
+    "avos": "1.0.16",
+    "happy-dom": "14.12.0",
     "svelte": "^4.2.17",
     "svelte-check": "^3.7.1",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2",
     "vite": "^5.2.11",
-    "vitest": "1.6.0",
-    "happy-dom": "14.12.0",
-    "avos": "1.0.16"
+    "vitest": "1.6.0"
   }
 }

@@ -3,11 +3,39 @@ export type Condition = {
     requiredValue: string;
 }
 
-type Type = 'text' | 'number' | 'textarea' | 'radio' | 'checkboxes' | 'date' | 'dropdown' | 'title';
-const TypeOptions: [Option<Type>] = [
+export type Type = 'text' | 'number' | 'textarea' | 'radio' | 'checkboxes' | 'date' | 'dropdown' | 'title';
+export const TypeOptions: Option<Type>[] = [ 
     {
         label: 'Text',
         value: 'text'
+    },
+    {
+        label: 'Number',
+        value: 'number'
+    },
+    {
+        label: 'Textarea',
+        value: 'textarea'
+    },
+    {
+        label: 'Radio',
+        value: 'radio'
+    },
+    {
+        label: 'Checkboxes',
+        value: 'checkboxes'
+    },
+    {
+        label: 'Date',
+        value: 'date'
+    },
+    {
+        label: 'Dropdown',
+        value: 'dropdown'
+    },
+    {
+        label: 'Title',
+        value: 'title'
     }
 ]
 

@@ -1,0 +1,110 @@
+<script lang="ts">
+
+        import { addSection, form } from "../data/stores";
+
+    addSection();
+</script>
+
+<div
+    style="position: relative; width: 544px; height: 423px; border: 1px solid gray; display: flex">
+    <div style="padding: 10px">
+        {#each $form.sections as section}
+        <div class="field-definitions">
+            <div style="gap: 10px; display: flex">
+                <div
+                    style="width: 31px; height: 31px; border-radius: 36px; border: 1px solid; display: flex; align-items: center; justify-content: center">
+                    X
+                </div>
+                <div
+                    style="width: 31px; height: 31px; border-radius: 36px; border: 1px solid; display: flex; align-items: center; justify-content: center">
+                    +
+                </div>
+            </div>
+            <div class="fieldline">
+                <div class="form-title">Section Title</div>
+                <input class="input-item" type="text" />
+            </div>
+            <div class="fieldline">
+                <div class="form-title">Description</div>
+                <textarea class="input-item"></textarea>
+            </div>
+            <div
+                style="padding: 16px; flex-direction: column; gap: 20px; display: flex">
+                <div style="font-size: 25px; font-weight: 200">Fields</div>
+                <div class="field-definitions">
+                    <div style="gap: 10px; display: flex">
+                        <div
+                            style="width: 31px; height: 31px; border-radius: 36px; border: 1px solid; display: flex; align-items: center; justify-content: center">
+                            X
+                        </div>
+                        <div
+                            style="width: 31px; height: 31px; border-radius: 36px; border: 1px solid; display: flex; align-items: center; justify-content: center">
+                            +
+                        </div>
+                    </div>
+                    <div class="fieldline">
+                        <div class="form-title">type</div>
+                        <select style="width: 146px; margin: 0">
+                            {#each }
+                        </select>
+                    </div>
+                    <div class="fieldline">
+                        <div class="form-title">Label</div>
+                        <input class="input-item" type="text" />
+                    </div>
+                    <div class="fieldline">
+                        <div class="form-title">Description</div>
+                        <textarea class="input-item"></textarea>
+                    </div>
+                    <div class="fieldline">
+                        <div class="form-title">Field Name</div>
+                        <input class="input-item" type="text" />
+                    </div>
+                    <div class="fieldline">
+                        <div class="form-title">Condition (field=value)</div>
+                        <input class="input-item" type="text" />
+                    </div>
+                    <Options />
+                    <div class="fieldline">
+                        <div class="form-title">required</div>
+                        <input
+                            style="width: 24px; height: 24px; margin: 0"
+                            type="checkbox" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        {/each}
+    </div>
+</div>
+
+<style>
+    .fieldline {
+      resize: horizontal;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 8px;
+      display: flex;
+    }
+
+    .input-item {
+      width: 200px;
+      margin: 0;
+    }
+
+    .form-title {
+      font-size: 18px;
+      font-weight: 200
+    }
+
+    .field-definitions {
+      gap: 10px;
+      ;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap
+    }
+
+    * {box-sizing: border-box}
+</style>
