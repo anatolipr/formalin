@@ -7,7 +7,7 @@
 
     const dispatch = createEventDispatcher();
 
-    function input(e: InputEvent) {
+    function input(e: any) {
         dispatch("input", e.target.value)
     }
 </script>

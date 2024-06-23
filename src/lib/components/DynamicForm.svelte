@@ -41,10 +41,12 @@
                 <div style="font-size: 18px">
                     {$form.sections[sectionIndex].fields[fieldIndex].label}
                 </div>
-                <svelte:component
-                    on:input={e => updateFormData($form.sections[sectionIndex].fields[fieldIndex].fieldName, e.detail)}
-                    value={$formData[$form.sections[sectionIndex].fields[fieldIndex].fieldName]}
-                    this="{typeMap[$form.sections[sectionIndex].fields[fieldIndex].type]}" />
+                <svelte:component on:input={e =>
+                updateFormData($form.sections[sectionIndex].fields[fieldIndex].fieldName,
+                e.detail)}
+                value={$formData[$form.sections[sectionIndex].fields[fieldIndex].fieldName]}
+                this="{typeMap[$form.sections[sectionIndex].fields[fieldIndex].type]}"
+                />
                 <div style="font-size: 12px">
                     {$form.sections[sectionIndex].fields[fieldIndex].description}
                 </div>
