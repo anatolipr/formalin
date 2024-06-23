@@ -11,6 +11,7 @@ function newField(): FormField {
         label: 'New field', 
         description: '', 
         type: 'text', 
+        placeholder: '',
         fieldName: '', 
         required: false,
         value: ''
@@ -28,7 +29,7 @@ function newSection(): FormSection {
 export function addSection(position?: number | undefined) {
     if (position !== undefined) {
         form.update($form => {
-            insertAtPosition($form.sections, newSection(), position)
+            insertAtPosition($form.sections, newSection(), position + 1)
             return $form
         })
     } else {
@@ -47,7 +48,7 @@ export function addEmptyField(sectionIndex:number, position?: number | undefined
 export function addField(sectionIndex: number, position?:number|undefined, value: FormField): void {
     if (position !== undefined) {
         form.update($form => {
-            insertAtPosition($form.sections[sectionIndex].fields, newField(), position)
+            insertAtPosition($form.sections[sectionIndex].fields, newField(), position + 1)
             return $form
         })
     } else {
@@ -61,6 +62,13 @@ export function addField(sectionIndex: number, position?:number|undefined, value
 export function updateFieldValue(sectionIndex: number, fieldIndex: number, value: string) {
     form.update($form => {
         $form.sections[sectionIndex].fields[fieldIndex].value = value
+        return $form
+    })
+}
+
+export function updateFeildPlaceholder(sectionIndex: number, fieldIndex: number, placeholder: string) {
+    form.update($form => {
+        $form.sections[sectionIndex].fields[fieldIndex].placeholder = placeholder
         return $form
     })
 }

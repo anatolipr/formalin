@@ -3,7 +3,7 @@ export type Condition = {
     requiredValue: string;
 }
 
-export type Type = 'text' | 'number' | 'textarea' | 'radio' | 'checkboxes' | 'date' | 'dropdown' | 'title';
+export type Type = 'text' | 'number' | 'textarea' | 'radios' | 'checkboxes' | 'date' | 'dropdown' | 'title';
 export const TypeOptions: Option<Type>[] = [ 
     {
         label: 'Text',
@@ -19,7 +19,7 @@ export const TypeOptions: Option<Type>[] = [
     },
     {
         label: 'Radio',
-        value: 'radio'
+        value: 'radios'
     },
     {
         label: 'Checkboxes',
@@ -43,8 +43,15 @@ export const TypeOptions: Option<Type>[] = [
 const typeSupportOptions: Type[] = 
 ['radio', 'checkboxes', 'dropdown'];
 
+const typeSupportPlaceholder: Type[] = 
+['text', 'number', 'textarea', 'date'];
+
 export function supportsOptions(type: Type): boolean {
     return typeSupportOptions.includes(type);
+}
+
+export function supportsPlaceholder(type: Type): boolean {
+    return typeSupportPlaceholder.includes(type);
 }
 
 export type Option<T> = {
@@ -56,6 +63,7 @@ export type FormField = {
     label: string;
     description: string;
     fieldName: string;
+    placeholder: string;
     required: boolean;
     type: Type;
     condition?: Condition;
