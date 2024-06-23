@@ -61,8 +61,16 @@
             </div>
             <div
                 style="padding: 16px; flex-direction: column; gap: 20px; display: flex">
-                <div style="font-size: 25px; font-weight: 200">Fields</div>
-                {#each section.fields as field, fieldIndex}
+                <div style="font-size: 25px; font-weight: 200">
+                    {$form.sections[sectionIndex].title} &gt; Fields
+                </div>
+                {#if section.fields?.length === 0}
+                <div
+                    style="width: 31px; height: 31px; border-radius: 36px; border: 1px solid; display: flex; align-items: center; justify-content: center"
+                    on:click="{() => addEmptyField(sectionIndex)}">
+                    +
+                </div>
+                {/if} {#each section.fields as field, fieldIndex}
                 <div class="field-definitions">
                     <div style="gap: 10px; display: flex">
                         <div
@@ -76,76 +84,79 @@
                             +
                         </div>
                     </div>
-                    <div class="fieldline">
-                        <div class="form-title">Label</div>
-                        <input
-                            class="input-item"
-                            type="text"
-                            value="{$form.sections[sectionIndex].fields[fieldIndex].label}"
-                            on:input="{e => updateFieldLabel(sectionIndex, fieldIndex, e.target.value)}" />
-                    </div>
-                    <div class="fieldline">
-                        <div class="form-title">type</div>
-                        <select
-                            style="width: 146px; margin: 0"
-                            value="{$form.sections[sectionIndex].fields[fieldIndex].type}"
-                            on:input="{e => updateFieldType(sectionIndex, fieldIndex, e.target.value)}">
-                            {#each TypeOptions as option}
-                            <option value="{option.value}">
-                                {option.label}
-                            </option>
-                            {/each}
-                        </select>
-                    </div>
-                    <div class="fieldline">
-                        <div class="form-title">Description</div>
-                        <textarea
-                            class="input-item"
-                            value="{$form.sections[sectionIndex].fields[fieldIndex].description}"
-                            on:input="{e => updateFieldDescription(sectionIndex, fieldIndex, e.target.value)}"></textarea>
-                    </div>
-                    <div class="fieldline">
-                        <div class="form-title">Field Name</div>
-                        <input
-                            class="input-item"
-                            type="text"
-                            value="{$form.sections[sectionIndex].fields[fieldIndex].fieldName}"
-                            on:input="{e => updateFieldName(sectionIndex, fieldIndex, e.target.value)}" />
-                    </div>
-                    <div class="fieldline">
-                        <div class="form-title">Default value</div>
-                        <input
-                            class="input-item"
-                            type="text"
-                            value="{$form.sections[sectionIndex].fields[fieldIndex].value}"
-                            on:input="{e => updateFieldValue(sectionIndex, fieldIndex, e.target.value)}" />
-                    </div>
-                    <div class="fieldline">
-                        <div class="form-title">Condition</div>
-                        <OptionInput value={conditionAsOption(sectionIndex,
-                        fieldIndex)} on:input={e =>
-                        updateFieldCondition(sectionIndex, fieldIndex,
-                        e.detail)} valuePlaceholder="field name"
-                        labelPlaceholder="expected value" />
-                    </div>
-                    {#if
-                    supportsOptions($form.sections[sectionIndex].fields[fieldIndex].type)}
-                    <div class="fieldline">
-                        <div class="form-title">Options</div>
-                        <Options
-                        value={$form.sections[sectionIndex].fields[fieldIndex].options}
-                        on:input={e => updateFieldOptions(sectionIndex,
-                        fieldIndex, e.detail)} />
-                    </div>
-                    {/if}
-                    <div class="fieldline">
-                        <div class="form-title">required</div>
-                        <input
-                            style="width: 24px; height: 24px; margin: 0"
-                            type="checkbox"
-                            value="true"
-                            checked="{$form.sections[sectionIndex].fields[fieldIndex].required}"
-                            on:input="{e => updateFieldRequired(sectionIndex, fieldIndex, e.target.checked)}" />
+                    <div
+                        style="gap: 20px; padding: 19px; padding-left: 24px; padding-right: 24px; padding-bottom: 24px; display: flex; flex-direction: column">
+                        <div class="fieldline">
+                            <div class="form-title">Label</div>
+                            <input
+                                class="input-item"
+                                type="text"
+                                value="{$form.sections[sectionIndex].fields[fieldIndex].label}"
+                                on:input="{e => updateFieldLabel(sectionIndex, fieldIndex, e.target.value)}" />
+                        </div>
+                        <div class="fieldline">
+                            <div class="form-title">type</div>
+                            <select
+                                style="width: 146px; margin: 0"
+                                value="{$form.sections[sectionIndex].fields[fieldIndex].type}"
+                                on:input="{e => updateFieldType(sectionIndex, fieldIndex, e.target.value)}">
+                                {#each TypeOptions as option}
+                                <option value="{option.value}">
+                                    {option.label}
+                                </option>
+                                {/each}
+                            </select>
+                        </div>
+                        <div class="fieldline">
+                            <div class="form-title">Description</div>
+                            <textarea
+                                class="input-item"
+                                value="{$form.sections[sectionIndex].fields[fieldIndex].description}"
+                                on:input="{e => updateFieldDescription(sectionIndex, fieldIndex, e.target.value)}"></textarea>
+                        </div>
+                        <div class="fieldline">
+                            <div class="form-title">Field Name</div>
+                            <input
+                                class="input-item"
+                                type="text"
+                                value="{$form.sections[sectionIndex].fields[fieldIndex].fieldName}"
+                                on:input="{e => updateFieldName(sectionIndex, fieldIndex, e.target.value)}" />
+                        </div>
+                        <div class="fieldline">
+                            <div class="form-title">Default value</div>
+                            <input
+                                class="input-item"
+                                type="text"
+                                value="{$form.sections[sectionIndex].fields[fieldIndex].value}"
+                                on:input="{e => updateFieldValue(sectionIndex, fieldIndex, e.target.value)}" />
+                        </div>
+                        <div class="fieldline">
+                            <div class="form-title">Condition</div>
+                            <OptionInput value={conditionAsOption(sectionIndex,
+                            fieldIndex)} on:input={e =>
+                            updateFieldCondition(sectionIndex, fieldIndex,
+                            e.detail)} valuePlaceholder="field name"
+                            labelPlaceholder="expected value" />
+                        </div>
+                        {#if
+                        supportsOptions($form.sections[sectionIndex].fields[fieldIndex].type)}
+                        <div class="fieldline">
+                            <div class="form-title">Options</div>
+                            <Options
+                            value={$form.sections[sectionIndex].fields[fieldIndex].options}
+                            on:input={e => updateFieldOptions(sectionIndex,
+                            fieldIndex, e.detail)} />
+                        </div>
+                        {/if}
+                        <div class="fieldline">
+                            <div class="form-title">required</div>
+                            <input
+                                style="width: 24px; height: 24px; margin: 0"
+                                type="checkbox"
+                                value="true"
+                                checked="{$form.sections[sectionIndex].fields[fieldIndex].required}"
+                                on:input="{e => updateFieldRequired(sectionIndex, fieldIndex, e.target.checked)}" />
+                        </div>
                     </div>
                 </div>
                 {/each}
