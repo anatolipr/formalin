@@ -29,8 +29,14 @@
 
 <div
     style="position: relative; width: 544px; height: 423px; border: 1px solid gray; display: flex; overflow: scroll">
-    <div style="padding: 10px">
-        {#each $form.sections as section, sectionIndex}
+    <div style="padding: 10px; flex-direction: column; display: flex">
+        {#if $form.sections?.length === 0}
+        <div
+            style="width: 31px; height: 31px; border-radius: 36px; border: 1px solid; display: flex; align-items: center; justify-content: center; flex-shrink: 0"
+            on:click="{() => addSection()}">
+            +
+        </div>
+        {/if} {#each $form.sections as section, sectionIndex}
         <div class="field-definitions">
             <div style="gap: 10px; display: flex">
                 <div

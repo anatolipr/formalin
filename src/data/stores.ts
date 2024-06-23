@@ -67,7 +67,7 @@ export function updateFieldValue(sectionIndex: number, fieldIndex: number, value
 
 export function removeSection(sectionIndex: number) {
     form.update($form => {
-        $form.sections[sectionIndex].fields.push(newField())
+        $form.sections.splice(sectionIndex, 1)
         return $form
     })
 }
