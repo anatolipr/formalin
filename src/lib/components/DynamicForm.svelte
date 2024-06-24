@@ -1,7 +1,7 @@
 <script lang="ts">
 
   import { form } from "../../data/stores.js";
-  import { formData, updateFormData } from "../../data/dataStore.js";
+  import { formData, updateFormData, meetsCondition } from "../../data/dataStore.js";
   import FormTextInput from "./FormTextInput.svelte";
   import FormRadiosInput from "./FormRadiosInput.svelte";
   import FormDropdownInput from "./FormDropdownInput.svelte";
@@ -26,7 +26,8 @@
 <div
   style="width: 545px; height: 422px; overflow: scroll"
   class="dynamic-form-container">
-  {#each $form.sections as section, sectionIndex}
+  {#each $form.sections as section, sectionIndex} {#if
+  meetsCondition($form.sections[sectionIndex].condition, $formData)}
   <div class="dynamic-form-section">
       <div>
           <div class="dynamic-form-title">
@@ -38,7 +39,8 @@
               {$form.sections[sectionIndex].description}
           </div>
       </div>
-      {#each $form.sections[sectionIndex].fields as field, fieldIndex}
+      {#each $form.sections[sectionIndex].fields as field, fieldIndex} {#if
+      meetsCondition($form.sections[sectionIndex].fields[fieldIndex].condition, $formData)}
       <div class="dynamic-form-fields">
           <div style="overflow: scroll" class="dynamic-form-field-label">
               <div
@@ -58,9 +60,9 @@
               </div>
           </div>
       </div>
-      {/each}
+      {/if} {/each}
   </div>
-  {/each}
+  {/if} {/each}
 </div>
 
 <style>

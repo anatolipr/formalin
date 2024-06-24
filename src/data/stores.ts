@@ -101,9 +101,10 @@ export function updateSectionDescription(sectionIndex: number, description: stri
     })
 }
 
-export function updateSectionCondition(sectionIndex: number, condition: Condition) {
+export function updateSectionCondition(sectionIndex: number, condition: Option<string>) {
     form.update($form => {
-        $form.sections[sectionIndex].condition = condition
+        $form.sections[sectionIndex].condition = 
+        {fieldName: condition.value, requiredValue: condition.label}
         return $form
     })
 }

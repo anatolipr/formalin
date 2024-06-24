@@ -1,4 +1,5 @@
 import Foo from 'avos/src/foo-store/foo.js'
+import type { Condition } from './type/formConfigTypes';
 
 export const formData: Foo<{[key:string]:string}> = new Foo({}, 'formData')
 
@@ -7,10 +8,17 @@ export function updateFormData(fieldName: string, value: string): void {
         return;
     }
 
-    console.log('updateFormData', fieldName, value)
     formData.update($formData => {
         $formData[fieldName] = value
         return $formData
     })
 }
 
+export function meetsCondition(condition: Condition | undefined, fd: any): boolean {
+    if (!condition || !condition.fieldName) {
+        return true;
+    }
+
+    const { fieldName, requiredValue } = condition;
+    return formData.get()[fieldName] == requiredValue;
+}
