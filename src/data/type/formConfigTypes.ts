@@ -41,13 +41,17 @@ export const TypeOptions: Option<Type>[] = [
 
 //
 const typeSupportOptions: Type[] = 
-['radio', 'checkboxes', 'dropdown'];
+['radios', 'checkboxes', 'dropdown'];
 
 const typeSupportPlaceholder: Type[] = 
 ['text', 'number', 'textarea', 'date'];
 
 export function supportsOptions(type: Type): boolean {
     return typeSupportOptions.includes(type);
+}
+
+export function supportsValue(type: Type): boolean {
+    return type !== 'title';
 }
 
 export function supportsPlaceholder(type: Type): boolean {

@@ -1,23 +1,13 @@
 <script lang="ts">
-  import type { FormField } from "../../data/type/formConfigTypes";
-  import { createEventDispatcher } from "svelte";
+    import type { FormField } from "../../data/type/formConfigTypes";
 
-    export let fieldDef: FormField;
-    export let value: string;
 
-    const dispatch = createEventDispatcher();
-
-    function input() {
-        dispatch("input", value)
-    }
+      export let fieldDef: FormField;
+      export let value: string;
 </script>
 
-<input
-    style="height: 40px; border: 1px solid gray"
-    type="text"
-    placeholder="{fieldDef?.placeholder}"
-    value="{value}"
-    on:input="{input}" />
+<div style="font-weight: bold">{fieldDef.label}</div>
+
 <style>
 
     * {box-sizing: border-box}

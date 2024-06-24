@@ -25,7 +25,7 @@
 
 
     import Options from "./Options.svelte";
-    import { TypeOptions, supportsOptions, supportsPlaceholder } from "../data/type/formConfigTypes";
+    import { TypeOptions, supportsOptions, supportsPlaceholder, supportsValue } from "../data/type/formConfigTypes";
     import OptionInput from "./OptionInput.svelte";
 
     import DynamicForm from "./components/DynamicForm.svelte";
@@ -141,6 +141,8 @@
                                             value="{$form.sections[sectionIndex].fields[fieldIndex].description}"
                                             on:input="{e => updateFieldDescription(sectionIndex, fieldIndex, e.target.value)}"></textarea>
                                     </div>
+                                    {#if
+                                    supportsValue($form.sections[sectionIndex].fields[fieldIndex].type)}
                                     <div class="fieldline">
                                         <div class="form-title">Field Name</div>
                                         <input
@@ -149,7 +151,7 @@
                                             value="{$form.sections[sectionIndex].fields[fieldIndex].fieldName}"
                                             on:input="{e => updateFieldName(sectionIndex, fieldIndex, e.target.value)}" />
                                     </div>
-                                    {#if
+                                    {/if} {#if
                                     supportsPlaceholder($form.sections[sectionIndex].fields[fieldIndex].type)}
                                     <div class="fieldline">
                                         <div class="form-title">
@@ -161,7 +163,8 @@
                                             value="{$form.sections[sectionIndex].fields[fieldIndex].placeholder}"
                                             on:input="{e => updateFeildPlaceholder(sectionIndex, fieldIndex, e.target.value)}" />
                                     </div>
-                                    {/if}
+                                    {/if} {#if
+                                    supportsValue($form.sections[sectionIndex].fields[fieldIndex].type)}
                                     <div class="fieldline">
                                         <div class="form-title">
                                             Default value
@@ -172,6 +175,7 @@
                                             value="{$form.sections[sectionIndex].fields[fieldIndex].value}"
                                             on:input="{e => updateFieldValue(sectionIndex, fieldIndex, e.target.value)}" />
                                     </div>
+                                    {/if}
                                     <div class="fieldline">
                                         <div class="form-title">Condition</div>
                                         <OptionInput
@@ -192,7 +196,8 @@
                                         updateFieldOptions(sectionIndex,
                                         fieldIndex, e.detail)} />
                                     </div>
-                                    {/if}
+                                    {/if} {#if
+                                    supportsValue($form.sections[sectionIndex].fields[fieldIndex].type)}
                                     <div class="fieldline">
                                         <div class="form-title">required</div>
                                         <input
@@ -202,6 +207,7 @@
                                             checked="{$form.sections[sectionIndex].fields[fieldIndex].required}"
                                             on:input="{e => updateFieldRequired(sectionIndex, fieldIndex, e.target.checked)}" />
                                     </div>
+                                    {/if}
                                 </div>
                             </div>
                             {/each}
