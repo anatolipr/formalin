@@ -3,7 +3,7 @@
     import { createEventDispatcher } from "svelte";
 
       export let fieldDef: FormField;
-      export let value: string;
+      export let value: string = "";
 
       const dispatch = createEventDispatcher();
 
