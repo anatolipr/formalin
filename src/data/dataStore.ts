@@ -7,6 +7,7 @@ export function updateFormData(fieldName: string, value: string): void {
         return;
     }
 
+    console.log('updateFormData', fieldName, value)
     formData.update($formData => {
         $formData[fieldName] = value
         return $formData
