@@ -194,7 +194,7 @@
                                     <div class="fieldline">
                                         <div class="form-title">Options</div>
                                         <Options
-                                        value={$form.sections[sectionIndex].fields[fieldIndex].options}
+                                        value={$form.sections[sectionIndex].fields[fieldIndex].options || []}
                                         on:input={e =>
                                         updateFieldOptions(sectionIndex,
                                         fieldIndex, e.detail)} />

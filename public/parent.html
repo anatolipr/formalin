@@ -1,0 +1,39 @@
+<iframe src="/index2.html"
+ style="width: 100%; height: 100%; outline: none; border: none;">
+
+<script>
+    window.addEventListener('message', (e) => {
+        
+            if (e.data &&
+                e.data.method === 'doFetch'
+            ) {
+                if (! e.data.channel) {
+                    console.error('fetchStart with no channel')
+                    return;
+                } else if (!e.data.url) {
+                    console.error('fetchStart with no URL')
+                    return;
+                }
+
+                
+                
+                let text = 'err'
+                if (e.data.url === '/secure/nositemesh/checklist/getCheckboxMeta.json?checkBoxId={currentCheckId}') {
+                    text = '{"sections":[{"description":"","title":"Company Details","fields":[{"label":"Name","description":"","type":"text","placeholder":"","fieldName":"company_name","required":true,"value":""},{"label":"Address","description":"","type":"textarea","placeholder":"","fieldName":"company_address","required":false,"value":""},{"label":"Postal","description":"","type":"checkboxes","placeholder":"","fieldName":"postal","required":false,"value":"","options":[{"label":"Yes","value":"yes"}]},{"label":"Delivery Instructions","description":"","type":"textarea","placeholder":"","fieldName":"","required":false,"value":"","condition":{"fieldName":"postal","requiredValue":"yes"}}]},{"description":"Some other details","title":"Other Information","fields":[{"label":"Preferences","description":"","type":"title","placeholder":"","fieldName":"","required":false,"value":""},{"label":"Favorite time","description":"","type":"radios","placeholder":"","fieldName":"favorite_time","required":false,"value":"","options":[{"label":"Morning","value":"morning"},{"label":"Afternoon","value":"afternoon"}]},{"label":"NOTE: Will be left at doorstep","description":"","type":"title","placeholder":"","fieldName":"","required":false,"value":"","condition":{"fieldName":"favorite_time","requiredValue":"!afternoon"}}]},{"description":"","title":"Afternoon delivery","fields":[{"label":"Should leave at door?","description":"","type":"dropdown","placeholder":"","fieldName":"","required":false,"value":"","options":[{"label":"Yes","value":"yes"},{"label":"No","value":"no"}],"condition":{"fieldName":"","requiredValue":""}}],"condition":{"fieldName":"favorite_time","requiredValue":"afternoon"}}]}';
+                }
+
+                if (e.data.url === '')
+
+                postToFrames({
+                        method: e.data.method + "Response",
+                        text,
+                        channel: e.data.channel
+                    })
+
+
+            }
+
+    })
+</script>
+
+</iframe>

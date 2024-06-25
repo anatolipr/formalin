@@ -90,6 +90,7 @@ export type Button = {
 }
 
 export type Form = {
+    id?: string | undefined;
     title?: string | undefined;
     description?: string;
     sections: FormSection[];

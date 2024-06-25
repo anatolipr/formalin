@@ -24,7 +24,7 @@
 </script>
 
 <div
-  style="width: 545px; height: 422px; overflow: scroll"
+  style=" overflow: scroll"
   class="dynamic-form-container">
   {#each $form.sections as section, sectionIndex} {#if
   meetsCondition($form.sections[sectionIndex].condition, $formData)}
@@ -52,7 +52,7 @@
               updateFormData($form.sections[sectionIndex].fields[fieldIndex].fieldName,
               e.detail)}
               fieldDef={$form.sections[sectionIndex].fields[fieldIndex]}
-              value={$formData[$form.sections[sectionIndex].fields[fieldIndex].fieldName]}
+              value={$formData[$form.sections[sectionIndex].fields[fieldIndex].fieldName] || ''}
               this="{typeMap[$form.sections[sectionIndex].fields[fieldIndex].type]}"
               />
               <div style="font-size: 12px">
@@ -66,40 +66,5 @@
 </div>
 
 <style>
-  .dynamic-form-container {
-    padding: 8px;
-    border: 1px solid;
-    flex-direction: column;
-    gap: 6px;
-    display: flex
-  }
-
-  .dynamic-form-section {
-    flex-direction: column;
-    gap: 4px;
-    display: flex;
-  }
-
-  .dynamic-form-title {
-    font-size: 25px
-  }
-
-  .dynamic-form-fields {
-    gap: 16px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column
-  }
-
-  .dynamic-form-field-label {
-    flex-direction: column;
-    gap: 5px;
-    display: flex;
-  }
-
-  .dynamic-form-description {
-    font-size: 16px
-  }
-
-  * {box-sizing: border-box}
+  
 </style>

@@ -23,7 +23,7 @@
         } else {
             selectedOptions = [...(selectedOptions||[]), selectedOption];
         }
-        dispatch("input", selectedOptions.join(","));
+        dispatch("input", selectedOptions.filter(o => !!o).join(","));
     }
 </script>
 

@@ -2,9 +2,10 @@ import Foo from 'avos/src/foo-store/foo.js'
 import type {  Condition, Form, FormField, FormSection, Option, Type } from './type/formConfigTypes'
 import { insertAtPosition } from './util/arrayUtil'
 
-export const form: Foo<Form>  = new Foo({
+export const form: Foo<Form> = new Foo({
     sections: <FormSection[]>[]
 }, 'form')
+
 
 function newField(): FormField {
     return {

@@ -20,5 +20,10 @@ export function meetsCondition(condition: Condition | undefined, fd: any): boole
     }
 
     const { fieldName, requiredValue } = condition;
+
+    if (requiredValue?.startsWith('!')) {
+        return formData.get()[fieldName] != requiredValue.substring(1);
+    }
+
     return formData.get()[fieldName] == requiredValue;
 }

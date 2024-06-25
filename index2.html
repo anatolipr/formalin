@@ -9,5 +9,30 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main2.ts"></script>
+
+
+    <script type="module">
+
+      import { doParentFetch } from 'https://ui.impact.com/onboarding-ui/misc/fetch-utils.js'  
+
+      doParentFetch(`/secure/nositemesh/checklist/getCheckboxMeta.json?checkBoxId={currentCheckId}`)
+          .then((data) => {
+            console.log(data)
+          })
+
+          
+    </script>
+
+    <button>Save</button>
+    <style>
+      #app {
+        padding: 20px;
+      }
+      button {
+        background-color: rgb(114, 166, 250);
+        color: white;
+        margin: 20px;
+      }
+    </style>
   </body>
 </html>
