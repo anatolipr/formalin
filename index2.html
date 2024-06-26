@@ -17,13 +17,69 @@
 
       doParentFetch(`/secure/nositemesh/checklist/getCheckboxMeta.json?checkBoxId={currentCheckId}`)
           .then((data) => {
-            console.log(data)
-          })
+            formFromJson(data);
+
+            const fields = [];
+
+            JSON.parse(data).sections.forEach(section => 
+            
+              section.fields.map(f => f.fieldName).filter(f => !!f)
+              .forEach(field => {
+                fields.push(`formData.${field}`)
+              })
+
+            );
+
+            console.log('fields from metadata', fields)
+            
+            doParentFetch(`/secure/checklist/eventValues.json?id={instanceEid}&keys=${fields.join(',')}`)
+            
+            .then(data => {
+              
+              const parsed = JSON.parse(data);
+
+              console.log('dataFromRules', data)
+
+              const dataForUi = {}
+              Object.keys(parsed).forEach(key => {
+                // remove formData prefix
+                const keyWithoutPrefix = key.replace('formData.', '')
+                dataForUi[keyWithoutPrefix] = parsed[key] || ''
+              })
+
+              console.log('dataForUi', dataForUi )
+              
+              ___formData.set(dataForUi)
+            })
 
           
+          });
+
+
+
+          window.save = function() {
+            
+            const b = ___formData.get()
+            
+            //update all keys to be prefixed with formData
+
+            const formDataForBackend = Object.keys(b).reduce((acc, key) => {
+              acc[`formData.${key}`] = b[key]
+              return acc
+            }, {})
+            console.log('rule form Data', formDataForBackend)
+
+            window.parent.postMessage({
+              method: 'bulkRuleUpdate',
+              b: formDataForBackend
+            }, '*')
+
+            window.parent.postMessage('MARK_AS_COMPLETE_AND_GO_TO_NEXT_CHECK', '*');
+          }
     </script>
 
-    <button>Save</button>
+
+    <button onclick="save()">Save</button>
     <style>
       #app {
         padding: 20px;
