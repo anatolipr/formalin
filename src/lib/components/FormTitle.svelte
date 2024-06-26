@@ -6,7 +6,7 @@
       export let value: string;
 </script>
 
-<div style="font-weight: bold">{fieldDef.label}</div>
+<div style="font-weight: bold; font-size: 22px">{fieldDef.label}</div>
 
 <style>
 

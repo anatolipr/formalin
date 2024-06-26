@@ -1,6 +1,8 @@
 <script lang="ts">
 
     import {
+        updateFormTitle,
+        updateFormDescription,
         addSection,
         removeField,
         removeSection,
@@ -50,6 +52,21 @@
                 style="width: 545px; height: 422px; border: 1px solid gray; display: flex; overflow: scroll">
                 <div
                     style="gap: 10px; padding: 10px; display: flex; flex-direction: column">
+                    <div class="fieldline">
+                        <div class="form-title">Form Title</div>
+                        <input
+                            class="input-item"
+                            type="text"
+                            value="{$form.title || ''}"
+                            on:input="{(e) => updateFormTitle(e.target.value)}" />
+                    </div>
+                    <div class="fieldline">
+                        <div class="form-title">Form / Page Description</div>
+                        <textarea
+                            class="input-item"
+                            value="{$form.description || ''}"
+                            on:input="{(e) => updateFormDescription(e.target.value)}"></textarea>
+                    </div>
                     {#if $form.sections?.length === 0}
                     <div
                         style="width: 31px; height: 31px; border-radius: 36px; border: 1px solid; display: flex; align-items: center; justify-content: center; flex-shrink: 0"
@@ -227,9 +244,9 @@
                 </div>
             </div>
         </div>
-        <div class="formalin-section">
+        <div style="width: 382px" class="formalin-section">
             <div>Preview</div>
-            <DynamicForm on:itemClick={itemClick} />
+            <DynamicForm on:itemClick="{itemClick}" />
         </div>
     </div>
 </div>

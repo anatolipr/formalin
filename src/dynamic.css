@@ -1,8 +1,7 @@
-
 .dynamic-form-container {
     padding: 8px;
     flex-direction: column;
-    gap: 6px;
+    gap: 16px;
     display: flex
   }
 
@@ -13,7 +12,8 @@
   }
 
   .dynamic-form-title {
-    font-size: 25px
+    font-size: 25px;
+    font-weight: 700;
   }
 
   .dynamic-form-fields {
@@ -30,5 +30,19 @@
   }
 
   .dynamic-form-description {
-    font-size: 16px
+    font-size: 14px;
+  }
+
+  .dynamic-form-head {
+    font-size: 30px;
+    font-weight: 800;
+  }
+
+  .dynamic-form-main-description {
+    font-size: 17px;
+    font-weight: 300;
+  }
+
+  .dynamic-form-field-title {
+    font-size: 18px;
   }

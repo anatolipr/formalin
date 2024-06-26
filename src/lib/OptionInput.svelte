@@ -44,14 +44,15 @@
 <style>
     .option-inputs {
       font-size: 14px;
-      border: 1px solid
+      border: 1px solid;
+      border-color: #a7a7a7;
     }
 
     .opton-top-input {
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
+      border-bottom-left-radius: unset;
       border-bottom-right-radius: unset;
-      border-bottom-left-radius: unset
     }
 
     .option-bottom-input {

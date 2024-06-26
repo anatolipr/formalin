@@ -15,3 +15,17 @@ export function moveElement<T>(array: T[], fromIndex: number, toIndex: number): 
     array.splice(toIndex, 0, element);
     return array;
 }
+
+export function moveElementUp<T>(array: T[], index: number): T[] {
+    if (index <= 0) {
+        return array;
+    }
+    return moveElement(array, index, index - 1);
+}
+
+export function moveElementDown<T>(array: T[], index: number): T[] {
+    if (index >= array.length - 1) {
+        return array;
+    }
+    return moveElement(array, index, index + 1);
+}

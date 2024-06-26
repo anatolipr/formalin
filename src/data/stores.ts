@@ -27,6 +27,20 @@ function newSection(): FormSection {
     };
 }
 
+export function updateFormTitle(title: string) {
+    form.update($form => {
+        $form.title = title
+        return $form
+    })
+}
+
+export function updateFormDescription(description: string) {
+    form.update($form => {
+        $form.description = description
+        return $form
+    })
+}
+
 export function addSection(position?: number | undefined) {
     if (position !== undefined) {
         form.update($form => {
