@@ -17,7 +17,8 @@
     type="{ fieldDef.type }"
     placeholder="{fieldDef.placeholder}"
     value="{value}"
-    on:input="{input}" />
+    on:input="{input}"
+    required="{fieldDef.required ? true : undefined}" />
 
 <style>
 

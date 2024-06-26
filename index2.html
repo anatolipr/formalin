@@ -7,7 +7,12 @@
     <title>FL</title>
   </head>
   <body>
+    <form onsubmit="this.reportValidity();return false">
     <div id="app"></div>
+    <button onclick="save()">Save</button>
+    </form>
+
+
     <script type="module" src="/src/main2.ts"></script>
 
 
@@ -55,10 +60,14 @@
           
           });
 
-
-
           window.save = function() {
             
+            const valid = document.forms[0].reportValidity();
+
+            if (!valid) {
+              return;
+            }
+            console.log('saving')
             const b = ___formData.get()
             
             //update all keys to be prefixed with formData
@@ -78,8 +87,6 @@
           }
     </script>
 
-
-    <button onclick="save()">Save</button>
     <style>
       #app {
         padding: 20px;

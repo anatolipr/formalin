@@ -20,7 +20,8 @@
             value="{option.value}"
             type="radio"
             on:input="{input}"
-            name="{fieldDef.fieldName}" />
+            name="{fieldDef.fieldName}"
+            required="{fieldDef.required ? true : undefined}" />
         <div>{option.label}</div></label
     >
     {/each} {/if}

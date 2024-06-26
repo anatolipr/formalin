@@ -33,6 +33,11 @@
 
     import DynamicForm from "./components/DynamicForm.svelte";
     addSection();
+
+    function itemClick(e) {
+        // update navigation hash to go to the correct section
+        location.hash = `anchor${e.detail}`;
+    }
 </script>
 
 <div
@@ -52,6 +57,7 @@
                         +
                     </div>
                     {/if} {#each $form.sections as section, sectionIndex}
+                    <a name="anchor{sectionIndex}"></a>
                     <div class="field-definitions">
                         <div style="gap: 10px; display: flex">
                             <div
@@ -99,6 +105,7 @@
                                 +
                             </div>
                             {/if} {#each section.fields as field, fieldIndex}
+                            <a name="anchor{sectionIndex}_{fieldIndex}"></a>
                             <div class="field-definitions">
                                 <div style="gap: 10px; display: flex">
                                     <div
@@ -194,8 +201,8 @@
                                     <div class="fieldline">
                                         <div class="form-title">Options</div>
                                         <Options
-                                        value={$form.sections[sectionIndex].fields[fieldIndex].options || []}
-                                        on:input={e =>
+                                        value={$form.sections[sectionIndex].fields[fieldIndex].options
+                                        || []} on:input={e =>
                                         updateFieldOptions(sectionIndex,
                                         fieldIndex, e.detail)} />
                                     </div>
@@ -222,7 +229,7 @@
         </div>
         <div class="formalin-section">
             <div>Preview</div>
-            <DynamicForm />
+            <DynamicForm on:itemClick={itemClick} />
         </div>
     </div>
 </div>

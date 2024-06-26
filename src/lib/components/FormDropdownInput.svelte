@@ -16,7 +16,8 @@
     style="border: 1px solid gray"
     placeholder="{fieldDef.placeholder}"
     value="{value}"
-    on:input="{input}">
+    on:input="{input}"
+    required="{fieldDef.required ? true : undefined}">
     {#if fieldDef.options} {#each fieldDef.options as option}
     <option value="{option.value}">{option.label}</option>
     {/each} {/if}

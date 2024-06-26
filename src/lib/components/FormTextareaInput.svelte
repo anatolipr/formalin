@@ -16,7 +16,8 @@
     style="border: 1px solid gray"
     placeholder="{fieldDef.placeholder}"
     value="{value}"
-    on:input="{input}"></textarea>
+    on:input="{input}"
+    required="{fieldDef.required ? true : undefined}"></textarea>
 
 <style>
 

@@ -35,7 +35,8 @@
             type="checkbox"
             value="{option.value}"
             checked="{selectedOptions?.includes(option.value)}"
-            on:change="{input}" />
+            on:change="{input}"
+            required="{fieldDef.required ? true : undefined}" />
         <div>{option.label}</div></label
     >
     {/each} {/if}
