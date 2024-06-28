@@ -16,6 +16,10 @@
         updateFieldRequired,
         updateFieldType,
         updateFeildPlaceholder,
+        moveSectionDown,
+        moveSectionUp,
+        moveFieldDown,
+        moveFieldUp,
         form,
         addEmptyField,
         conditionAsOption,
@@ -69,7 +73,8 @@
                     </div>
                     {#if $form.sections?.length === 0}
                     <div
-                        style="width: 31px; height: 31px; border-radius: 36px; border: 1px solid; display: flex; align-items: center; justify-content: center; flex-shrink: 0"
+                        style="width: 31px; height: 31px; flex-shrink: 0"
+                        class="round-btn"
                         on:click="{() => addSection()}">
                         +
                     </div>
@@ -78,14 +83,28 @@
                     <div class="field-definitions">
                         <div style="gap: 10px; display: flex">
                             <div
-                                style="width: 31px; height: 31px; border-radius: 36px; border: 1px solid; display: flex; align-items: center; justify-content: center"
+                                style="width: 31px; height: 31px"
+                                class="round-btn"
                                 on:click="{() => removeSection(sectionIndex)}">
                                 X
                             </div>
                             <div
-                                style="width: 31px; height: 31px; border-radius: 36px; border: 1px solid; display: flex; align-items: center; justify-content: center"
+                                style="width: 31px; height: 31px"
+                                class="round-btn"
                                 on:click="{() => addSection(sectionIndex)}">
                                 +
+                            </div>
+                            <div
+                                style="width: 31px; height: 31px"
+                                class="round-btn"
+                                on:click="{() => moveSectionUp(sectionIndex)}">
+                                ↑
+                            </div>
+                            <div
+                                style="width: 31px; height: 31px"
+                                class="round-btn"
+                                on:click="{() => moveSectionDown(sectionIndex)}">
+                                ↓
                             </div>
                         </div>
                         <div class="fieldline">
@@ -117,7 +136,8 @@
                             </div>
                             {#if section.fields?.length === 0}
                             <div
-                                style="width: 31px; height: 31px; border-radius: 36px; border: 1px solid; display: flex; align-items: center; justify-content: center"
+                                style="width: 31px; height: 31px"
+                                class="round-btn"
                                 on:click="{() => addEmptyField(sectionIndex)}">
                                 +
                             </div>
@@ -126,14 +146,28 @@
                             <div class="field-definitions">
                                 <div style="gap: 10px; display: flex">
                                     <div
-                                        style="width: 31px; height: 31px; border-radius: 36px; border: 1px solid; display: flex; align-items: center; justify-content: center"
+                                        style="width: 31px; height: 31px"
+                                        class="round-btn"
                                         on:click="{() => removeField(sectionIndex, fieldIndex)}">
                                         X
                                     </div>
                                     <div
-                                        style="width: 31px; height: 31px; border-radius: 36px; border: 1px solid; display: flex; align-items: center; justify-content: center"
+                                        style="width: 31px; height: 31px"
+                                        class="round-btn"
                                         on:click="{() => addEmptyField(sectionIndex, fieldIndex)}">
                                         +
+                                    </div>
+                                    <div
+                                        style="width: 31px; height: 31px"
+                                        class="round-btn"
+                                        on:click="{() => moveFieldUp(sectionIndex, fieldIndex)}">
+                                        ↑
+                                    </div>
+                                    <div
+                                        style="width: 31px; height: 31px"
+                                        class="round-btn"
+                                        on:click="{() => moveFieldDown(sectionIndex, fieldIndex)}">
+                                        ↓
                                     </div>
                                 </div>
                                 <div
@@ -244,7 +278,7 @@
                 </div>
             </div>
         </div>
-        <div style="width: 382px" class="formalin-section">
+        <div style="width: 379px; height: 451px" class="formalin-section">
             <div>Preview</div>
             <DynamicForm on:itemClick="{itemClick}" />
         </div>
@@ -285,5 +319,20 @@
       flex-direction: column
     }
 
+    .round-btn {
+      border-radius: 36px;
+      border: 1px solid;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .round-btn:hover {
+      background-color: #787878;
+      color: white;
+    }
+    .round-btn:active {
+      background-color: #000000;
+    }
     * {box-sizing: border-box}
 </style>

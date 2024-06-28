@@ -1,6 +1,6 @@
 import Foo from 'avos/src/foo-store/foo.js'
 import type {  Condition, Form, FormField, FormSection, Option, Type } from './type/formConfigTypes'
-import { insertAtPosition } from './util/arrayUtil'
+import { insertAtPosition, moveElementDown, moveElementUp } from './util/arrayUtil'
 
 export const form: Foo<Form> = new Foo({
     sections: <FormSection[]>[]
@@ -89,6 +89,9 @@ export function updateFeildPlaceholder(sectionIndex: number, fieldIndex: number,
 }
 
 export function removeSection(sectionIndex: number) {
+    const name = form.get().sections[sectionIndex].title
+    if (!confirm(`Are you sure you want to delete the section "${name}"?`)) return;
+
     form.update($form => {
         $form.sections.splice(sectionIndex, 1)
         return $form
@@ -96,6 +99,9 @@ export function removeSection(sectionIndex: number) {
 }
 
 export function removeField(sectionIndex: number, fieldIndex: number) {
+    const name = form.get().sections[sectionIndex].fields[fieldIndex].label
+    if (!confirm(`Are you sure you want to delete the field "${name}"?`)) return;
+    
     form.update($form => {
         $form.sections[sectionIndex].fields.splice(fieldIndex, 1)
         return $form
@@ -148,8 +154,6 @@ export function conditionAsOption(sectionIndex: number, fieldIndex?: number): Op
     
 }
 
-
-
 export function updateFieldCondition(sectionIndex: number, fieldIndex: number, condition: Option<string>) {
     form.update($form => {
         $form.sections[sectionIndex].fields[fieldIndex].condition = 
@@ -189,6 +193,39 @@ export function updateFieldRequired(sectionIndex: number, fieldIndex: number, re
 export function updateFieldOptions(sectionIndex: number, fieldIndex: number, options: Option<string>[]) {
     form.update($form => {
         $form.sections[sectionIndex].fields[fieldIndex].options = [...options]
+        return $form
+    })
+}
+
+export function moveSectionUp(sectionIndex: number) {
+    if (sectionIndex === 0) return
+    form.update($form => {
+        moveElementUp($form.sections, sectionIndex)
+        return $form
+    })
+}
+
+export function moveSectionDown(sectionIndex: number) {
+    console.log(form.get())
+    form.update($form => {
+        moveElementDown($form.sections, sectionIndex)
+        return $form
+    })
+
+    console.log(form.get())
+}
+
+export function moveFieldUp(sectionIndex: number, fieldIndex: number) {
+    if (fieldIndex === 0) return
+    form.update($form => {
+        moveElementUp($form.sections[sectionIndex].fields, fieldIndex)
+        return $form
+    })
+}
+
+export function moveFieldDown(sectionIndex: number, fieldIndex: number) {
+    form.update($form => {
+        moveElementDown($form.sections[sectionIndex].fields, fieldIndex)
         return $form
     })
 }
