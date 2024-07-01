@@ -84,9 +84,16 @@ export type FormSection = {
 }
 
 export type Button = {
+    /** 
+     * The type of button. Eg. 'submit', 'reset', 'cancel'
+     */
     type: string;
     label: string;
     enabled: boolean;
+    /**
+     * The event that will be triggered when the button is clicked
+     */
+    event: string;
 }
 
 export type Form = {

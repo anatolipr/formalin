@@ -1,9 +1,13 @@
 import Foo from 'avos/src/foo-store/foo.js'
-import type {  Condition, Form, FormField, FormSection, Option, Type } from './type/formConfigTypes'
+import type {  Button, Condition, Form, FormField, FormSection, Option, Type } from './type/formConfigTypes'
 import { insertAtPosition, moveElementDown, moveElementUp } from './util/arrayUtil'
 
-export const form: Foo<Form> = new Foo({
-    sections: <FormSection[]>[]
+export const form: Foo<Form> = new Foo<Form>({
+    id:"formData",
+    sections: <FormSection[]>[],
+    buttons: <Button[]>[
+        {type: 'submit', label: 'Submit', enabled: true, event: 'submit'}
+    ]
 }, 'form')
 
 
@@ -18,6 +22,64 @@ function newField(): FormField {
         value: ''
     }
 }
+
+export function updateFormId(id: string) {
+    form.update($form => {
+        $form.id = id
+        return $form
+    })
+}
+
+export function addButton(button: Button) {
+    form.update($form => {
+        $form.buttons?.push(button)
+        return $form
+    })
+}
+
+export function removeButton(index: number) {
+    form.update($form => {
+        $form.buttons?.splice(index, 1)
+        return $form
+    })
+}
+
+export function updateButtonLabel(index: number, label: string) {
+    form.update($form => {
+        if ($form.buttons !== undefined) {
+            $form.buttons[index].label = label
+        }
+        return $form
+    })
+}
+
+export function updateButtonEnabled(index: number, enabled: boolean) {
+    form.update($form => {
+        if ($form.buttons !== undefined) {
+            $form.buttons[index].enabled = enabled
+        }
+        return $form
+    })
+}
+
+export function updateButtonType(index: number, type: string) {
+    form.update($form => {
+        if ($form.buttons !== undefined) {
+            $form.buttons[index].type = type
+        }
+        return $form
+    })
+}
+
+export function updateButtonEvent(index: number, event: string) {
+    form.update($form => {
+        if ($form.buttons !== undefined) {
+            $form.buttons[index].event = event
+        }
+        return $form
+    })
+}
+
 
 function newSection(): FormSection {
     return {
@@ -60,7 +122,7 @@ export function addEmptyField(sectionIndex:number, position?: number | undefined
     addField(sectionIndex, position, newField())
 }
 
-export function addField(sectionIndex: number, position?:number|undefined, value: FormField): void {
+export function addField(sectionIndex: number, position: number|undefined, value: FormField): void {
     if (position !== undefined) {
         form.update($form => {
             insertAtPosition($form.sections[sectionIndex].fields, newField(), position + 1)
