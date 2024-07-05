@@ -33,8 +33,13 @@
   function dispatchFieldClick(sectionIndex: number, fieldIndex: number) {
     dispatch('itemClick', `${sectionIndex}_${fieldIndex}`);
   }
+
+  function buttonClicked(button) {
+
+  }
 </script>
 
+<!-- class="form-secondary-button" -->
 <div style="overflow: scroll" class="dynamic-form-container">
   {#if $form.title}
   <div>
@@ -84,5 +89,87 @@
       </div>
       {/if} {/each}
   </div>
-  {/if} {/each}
+  {/if} {/each} {#if $form.buttons && $form.buttons.length > 0}
+  <div style="gap: 4px; display: flex">
+      {#each $form.buttons as button}
+      <div
+          class="form-button"
+          class:form-secondary-button="{button.value !== 'submit'}"
+          on:click="{ () => buttonClicked(button) }">
+          {button.label}
+      </div>
+      {/each}
+  </div>
+  {/if}
 </div>
+
+<style>
+  .dynamic-form-container {
+    padding: 8px;
+    flex-direction: column;
+    gap: 16px;
+    display: flex
+  }
+
+  .dynamic-form-section {
+    flex-direction: column;
+    gap: 4px;
+    display: flex;
+  }
+
+  .dynamic-form-title {
+    font-size: 25px;
+    font-weight: 700;
+  }
+
+  .dynamic-form-fields {
+    gap: 16px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column
+  }
+
+  .dynamic-form-field-label {
+    flex-direction: column;
+    gap: 5px;
+    display: flex;
+  }
+
+  .dynamic-form-description {
+    font-size: 14px;
+  }
+
+  .dynamic-form-head {
+    font-size: 30px;
+    font-weight: 800;
+  }
+
+  .dynamic-form-main-description {
+    font-size: 17px;
+    font-weight: 300;
+  }
+
+  .dynamic-form-field-title {
+    font-size: 18px;
+  }
+
+  .form-button {
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 8px;
+    padding-bottom: 9px;
+    border-radius: 6px;
+    background-color: #005baa;
+    cursor: pointer;
+    display: flex;
+    color: #ffffff;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-secondary-button {
+    background: none;
+  }
+
+  * {box-sizing: border-box}
+</style>

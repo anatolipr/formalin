@@ -15,6 +15,7 @@
         updateFieldCondition,
         updateFieldOptions,
         updateFieldRequired,
+        updateFieldValidation,
         updateFieldType,
         updateFeildPlaceholder,
         moveSectionDown,
@@ -24,18 +25,16 @@
         form,
         addEmptyField,
         conditionAsOption,
-
+        updateButtons,
         updateFieldValue,
 
         updateSectionCondition
-
-
 
     } from "../data/stores";
 
 
     import Options from "./Options.svelte";
-    import { TypeOptions, supportsOptions, supportsPlaceholder, supportsValue } from "../data/type/formConfigTypes";
+    import { TypeOptions, supportsOptions, supportsPlaceholder, supportsPattern, supportsValue } from "../data/type/formConfigTypes";
     import OptionInput from "./OptionInput.svelte";
 
     import DynamicForm from "./components/DynamicForm.svelte";
@@ -57,6 +56,19 @@
                 style="width: 545px; height: 422px; border: 1px solid gray; display: flex; overflow: scroll">
                 <div
                     style="gap: 10px; padding: 10px; display: flex; flex-direction: column">
+                    <div class="fieldline">
+                        <div class="form-title">Form ID</div>
+                        <input
+                            class="input-item"
+                            type="text"
+                            value="{$form.id || ''}"
+                            on:input="{(e) => updateFormId(e.target.value)}" />
+                        <div class="form-title dynamic-form-description">
+                            Defines the prefix of the emitted form data eg.
+                            `formData.first_name`. Useful when you need to
+                            handle input from multiple forms at once.
+                        </div>
+                    </div>
                     <div class="fieldline">
                         <div class="form-title">Form Title</div>
                         <input
@@ -129,6 +141,12 @@
                             on:input={e => updateSectionCondition(sectionIndex,
                             e.detail)} valuePlaceholder="field name"
                             labelPlaceholder="expected value" />
+
+                            <div class="form-title dynamic-form-description">
+                                '!' before value negates the condition. Eg.
+                                '!seven' will be true for any value but 'seven'.
+                                Tip only '!' results in &lt;not empty&gt;
+                            </div>
                         </div>
                         <div
                             style="padding: 16px; flex-direction: column; gap: 20px; display: flex">
@@ -237,18 +255,7 @@
                                             value="{$form.sections[sectionIndex].fields[fieldIndex].value}"
                                             on:input="{e => updateFieldValue(sectionIndex, fieldIndex, e.target.value)}" />
                                     </div>
-                                    {/if}
-                                    <div class="fieldline">
-                                        <div class="form-title">Condition</div>
-                                        <OptionInput
-                                        value={conditionAsOption(sectionIndex,
-                                        fieldIndex)} on:input={e =>
-                                        updateFieldCondition(sectionIndex,
-                                        fieldIndex, e.detail)}
-                                        valuePlaceholder="field name"
-                                        labelPlaceholder="expected value" />
-                                    </div>
-                                    {#if
+                                    {/if} {#if
                                     supportsOptions($form.sections[sectionIndex].fields[fieldIndex].type)}
                                     <div class="fieldline">
                                         <div class="form-title">Options</div>
@@ -259,6 +266,39 @@
                                         fieldIndex, e.detail)} />
                                     </div>
                                     {/if} {#if
+                                    supportsPattern($form.sections[sectionIndex].fields[fieldIndex].type)}
+                                    <div class="fieldline">
+                                        <div class="form-title">Validation</div>
+                                        <input
+                                            class="input-item"
+                                            type="text"
+                                            value="{$form.sections[sectionIndex].fields[fieldIndex].validation}"
+                                            on:input="{e => updateFieldValidation(sectionIndex, fieldIndex, e.target.value)}" />
+                                        <div
+                                            class="form-title dynamic-form-description">
+                                            input validation pattern
+                                        </div>
+                                    </div>
+                                    {/if}
+                                    <div class="fieldline">
+                                        <div class="form-title">Condition</div>
+                                        <OptionInput
+                                        value={conditionAsOption(sectionIndex,
+                                        fieldIndex)} on:input={e =>
+                                        updateFieldCondition(sectionIndex,
+                                        fieldIndex, e.detail)}
+                                        valuePlaceholder="field name"
+                                        labelPlaceholder="expected value" />
+
+                                        <div
+                                            class="form-title dynamic-form-description">
+                                            '!' before value negates the
+                                            condition. Eg. '!seven' will be true
+                                            for any value but 'seven'. Tip only
+                                            '!' results in &lt;not empty&gt;
+                                        </div>
+                                    </div>
+                                    {#if
                                     supportsValue($form.sections[sectionIndex].fields[fieldIndex].type)}
                                     <div class="fieldline">
                                         <div class="form-title">required</div>
@@ -276,6 +316,11 @@
                         </div>
                     </div>
                     {/each}
+                    <div style="padding-bottom: 20px" class="fieldline">
+                        <div class="form-title">Buttons</div>
+                        <Options value={$form.buttons || []} on:input={e =>
+                        updateButtons(e.detail)} />
+                    </div>
                 </div>
             </div>
         </div>
@@ -318,6 +363,10 @@
       gap: 10px;
       display: flex;
       flex-direction: column
+    }
+
+    .dynamic-form-description {
+      font-size: 14px;
     }
 
     .round-btn {

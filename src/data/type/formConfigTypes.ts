@@ -46,6 +46,9 @@ const typeSupportOptions: Type[] =
 const typeSupportPlaceholder: Type[] = 
 ['text', 'number', 'textarea', 'date'];
 
+const typeSupportPattern: Type[] = 
+['text', 'number', 'date'];
+
 export function supportsOptions(type: Type): boolean {
     return typeSupportOptions.includes(type);
 }
@@ -56,6 +59,10 @@ export function supportsValue(type: Type): boolean {
 
 export function supportsPlaceholder(type: Type): boolean {
     return typeSupportPlaceholder.includes(type);
+}
+
+export function supportsPattern(type: Type): boolean {
+    return typeSupportPattern.includes(type);
 }
 
 export type Option<T> = {
@@ -69,6 +76,7 @@ export type FormField = {
     fieldName: string;
     placeholder: string;
     required: boolean;
+    validation: string;
     type: Type;
     condition?: Condition;
     options?: Option<string>[];
@@ -93,7 +101,7 @@ export type Button = {
     /**
      * The event that will be triggered when the button is clicked
      */
-    event: string;
+    value: string;
 }
 
 export type Form = {

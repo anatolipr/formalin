@@ -6,7 +6,7 @@ export const form: Foo<Form> = new Foo<Form>({
     id:"formData",
     sections: <FormSection[]>[],
     buttons: <Button[]>[
-        {type: 'submit', label: 'Submit', enabled: true, event: 'submit'}
+        {type: 'submit', label: 'Submit', enabled: true, value: 'submit'}
     ]
 }, 'form')
 
@@ -19,7 +19,8 @@ function newField(): FormField {
         placeholder: '',
         fieldName: '', 
         required: false,
-        value: ''
+        value: '',
+        validation: ''
     }
 }
 
@@ -252,6 +253,13 @@ export function updateFieldRequired(sectionIndex: number, fieldIndex: number, re
     })
 }
 
+export function updateFieldValidation(sectionIndex: number, fieldIndex: number, validation: string) {
+    form.update($form => {
+        $form.sections[sectionIndex].fields[fieldIndex].validation = validation
+        return $form
+    })
+}
+
 export function updateFieldOptions(sectionIndex: number, fieldIndex: number, options: Option<string>[]) {
     form.update($form => {
         $form.sections[sectionIndex].fields[fieldIndex].options = [...options]
@@ -288,6 +296,13 @@ export function moveFieldUp(sectionIndex: number, fieldIndex: number) {
 export function moveFieldDown(sectionIndex: number, fieldIndex: number) {
     form.update($form => {
         moveElementDown($form.sections[sectionIndex].fields, fieldIndex)
+        return $form
+    })
+}
+
+export function updateButtons(buttons: Button[]) {
+    form.update($form => {
+        $form.buttons = buttons
         return $form
     })
 }

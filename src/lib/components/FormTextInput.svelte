@@ -18,7 +18,8 @@
     placeholder="{fieldDef.placeholder}"
     value="{value}"
     on:input="{input}"
-    required="{fieldDef.required ? true : undefined}" />
+    required="{fieldDef.required ? true : undefined}"
+    pattern="{fieldDef.validation}" />
 
 <style>
 

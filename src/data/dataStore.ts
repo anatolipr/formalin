@@ -1,7 +1,31 @@
 import Foo from 'avos/src/foo-store/foo.js'
 import type { Condition } from './type/formConfigTypes';
 
-export const formData: Foo<{[key:string]:string}> = new Foo({}, 'formData')
+type FormDataType = {[key:string]:string};
+
+export const formData: Foo<FormDataType> = new Foo({}, 'formData')
+
+import { form } from './stores'
+import type { FormSection } from './type/formConfigTypes'
+import { registerGlobal } from './util/globalHelper';
+
+export function resetFormData(): void {
+    const newFormData: FormDataType  = {};
+
+    form.get().sections.forEach((section: FormSection) => {
+        section.fields.forEach(field => {
+            if (!field.fieldName) {
+                newFormData[field.fieldName] = field.value || ''
+            }
+        })
+    });
+
+    formData.set(newFormData)
+}
+
+registerGlobal('resetFormData', resetFormData);
+
+
 
 export function updateFormData(fieldName: string, value: string): void {
     if (!fieldName) {
