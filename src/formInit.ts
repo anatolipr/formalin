@@ -1,5 +1,6 @@
 import { form } from './data/stores';
 import { formData } from './data/dataStore';
+import { copyToClipboard } from './data/util/clipboard';
 
 /**
  * This function is used to expose the form and formData objects to the window object
@@ -25,17 +26,10 @@ export default function(): void {
         return JSON.stringify(formData.get())
       };
 
-      (window as any).copyToClipboard = function(text: string) {
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-      };
+      (window as any).copyToClipboard = copyToClipboard
 
-      (window as any).emitFormEvent = function(event: string, data: any) {
-        dispatchEvent(new CustomEvent(event, { detail: data }))
-      }
+      // (window as any).emitFormEvent = function(event: string, data: any) {
+      //   dispatchEvent(new CustomEvent(event, { detail: data }))
+      // }
 
 }

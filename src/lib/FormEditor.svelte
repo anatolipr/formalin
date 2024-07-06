@@ -27,7 +27,7 @@
         conditionAsOption,
         updateButtons,
         updateFieldValue,
-
+        copyDefinition,
         updateSectionCondition
 
     } from "../data/stores";
@@ -51,7 +51,7 @@
     <div style="padding: 0px; font-size: 13px">form-a-lin</div>
     <div style="gap: 5px; margin: auto; display: flex">
         <div class="formalin-section">
-            <div>Form Definition</div>
+            <div on:click="{copyDefinition}">Form Definition</div>
             <div
                 style="width: 545px; height: 422px; border: 1px solid gray; display: flex; overflow: scroll">
                 <div

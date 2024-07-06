@@ -1,6 +1,7 @@
 import Foo from 'avos/src/foo-store/foo.js'
 import type {  Button, Condition, Form, FormField, FormSection, Option, Type } from './type/formConfigTypes'
 import { insertAtPosition, moveElementDown, moveElementUp } from './util/arrayUtil'
+import { copyToClipboard } from './util/clipboard'
 
 export const form: Foo<Form> = new Foo<Form>({
     id:"formData",
@@ -191,6 +192,12 @@ export function updateSectionCondition(sectionIndex: number, condition: Option<s
         {fieldName: condition.value, requiredValue: condition.label}
         return $form
     })
+}
+
+export function copyDefinition() {
+    const $form = form.get()
+    copyToClipboard(JSON.stringify($form, null, 2))
+    alert('Form definition copied to clipboard')
 }
 
 export function updateFieldLabel(sectionIndex: number, fieldIndex: number, label: string) {
