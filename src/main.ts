@@ -10,4 +10,12 @@ const app = new App({
 
 formInit();
 
+document.addEventListener(
+  'formalinSubmit', (e: Event) => {
+    alert('Submitted!');
+  }
+)
+
+
+
 export default app

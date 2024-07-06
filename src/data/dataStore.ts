@@ -12,7 +12,7 @@ import { registerGlobal } from './util/globalHelper';
 export function resetFormData(): void {
     const newFormData: FormDataType  = {};
 
-    form.get().sections.forEach((section: FormSection) => {
+    (form.get()?.sections || []).forEach((section: FormSection) => {
         section.fields.forEach(field => {
             if (!field.fieldName) {
                 newFormData[field.fieldName] = field.value || ''
@@ -22,6 +22,8 @@ export function resetFormData(): void {
 
     formData.set(newFormData)
 }
+
+form.subscribe(resetFormData);
 
 registerGlobal('resetFormData', resetFormData);
 

@@ -19,7 +19,7 @@
     value="{value}"
     on:input="{input}"
     required="{fieldDef.required ? true : undefined}"
-    pattern="{fieldDef.validation}" />
+    pattern="{!!fieldDef.validation ? fieldDef.validation : undefined}" />
 
 <style>
 

@@ -14,7 +14,6 @@
 
   const dispatch = createEventDispatcher();
 
-
   const typeMap: Record<Type, ComponentType> = {
     'text': FormTextInput,
     'textarea': FormTextareaInput,
@@ -34,13 +33,39 @@
     dispatch('itemClick', `${sectionIndex}_${fieldIndex}`);
   }
 
-  function buttonClicked(button) {
+  function submit(e: SubmitEvent): void {
+    const formEl: HTMLFormElement = e.target as HTMLFormElement;
+    
+    const formData = new FormData(formEl);
+    
+    if (e.submitter) {
+      const submitter = e.submitter as HTMLInputElement;
+      formData.append(submitter.name, submitter.value);
+    }
+    
+    const action = formData.get('action');
 
+    if (action === 'submit') {
+      formEl.reportValidity();
+    }
+
+    document.dispatchEvent(new CustomEvent('formalinSubmit', {
+      detail: {
+        formId: formEl.name,
+        action, formData
+      }
+    }));
+
+    e.preventDefault();
   }
 </script>
 
 <!-- class="form-secondary-button" -->
-<div style="overflow: scroll" class="dynamic-form-container">
+<form
+  style="overflow: scroll"
+  class="dynamic-form-container"
+  on:submit="{submit}"
+  name="{$form.id}">
   {#if $form.title}
   <div>
       <div class="dynamic-form-head">{$form.title || ''}</div>
@@ -92,16 +117,18 @@
   {/if} {/each} {#if $form.buttons && $form.buttons.length > 0}
   <div style="gap: 4px; display: flex">
       {#each $form.buttons as button}
-      <div
+      <button
           class="form-button"
           class:form-secondary-button="{button.value !== 'submit'}"
-          on:click="{ () => buttonClicked(button) }">
+          name="action"
+          value="{button.value}"
+          type="submit">
           {button.label}
-      </div>
+      </button>
       {/each}
   </div>
   {/if}
-</div>
+</form>
 
 <style>
   .dynamic-form-container {
@@ -169,6 +196,8 @@
 
   .form-secondary-button {
     background: none;
+    color: unset;
+    border: none;
   }
 
   * {box-sizing: border-box}

@@ -7,14 +7,9 @@
     <title>FL</title>
   </head>
   <body>
-    <form onsubmit="this.reportValidity();return false">
     <div id="app"></div>
-    <button onclick="save()">Save</button>
-    </form>
-
 
     <script type="module" src="/src/main2.ts"></script>
-
 
     <script type="module">
 
@@ -24,13 +19,15 @@
           .then((data) => {
             formFromJson(data);
 
+            const formId = JSON.parse(data).id;
+
             const fields = [];
 
             JSON.parse(data).sections.forEach(section => 
             
               section.fields.map(f => f.fieldName).filter(f => !!f)
               .forEach(field => {
-                fields.push(`formData.${field}`)
+                fields.push(`${formId}.${field}`)
               })
 
             );
@@ -42,13 +39,15 @@
             .then(data => {
               
               const parsed = JSON.parse(data);
+              
+              console.log('dataFromRules', parsed);
 
-              console.log('dataFromRules', data)
+              
 
               const dataForUi = {}
               Object.keys(parsed).forEach(key => {
                 // remove formData prefix
-                const keyWithoutPrefix = key.replace('formData.', '')
+                const keyWithoutPrefix = key.replace(`${formId}.`, '')
                 dataForUi[keyWithoutPrefix] = parsed[key] || ''
               })
 
@@ -62,18 +61,18 @@
 
           window.save = function() {
             
-            const valid = document.forms[0].reportValidity();
+            // const valid = document.forms[0].reportValidity();
 
-            if (!valid) {
-              return;
-            }
+            // if (!valid) {
+            //   return;
+            // }
             console.log('saving')
             const b = ___formData.get()
             
             //update all keys to be prefixed with formData
 
             const formDataForBackend = Object.keys(b).reduce((acc, key) => {
-              acc[`formData.${key}`] = b[key]
+              acc[`${formId}.${key}`] = b[key]
               return acc
             }, {})
             console.log('rule form Data', formDataForBackend)
@@ -83,8 +82,17 @@
               b: formDataForBackend
             }, '*')
 
+            
             window.parent.postMessage('MARK_AS_COMPLETE_AND_GO_TO_NEXT_CHECK', '*');
           }
+
+          document.addEventListener(
+            'formalinSubmit', (e) => {
+              if (e.detail && e.detail.action === 'submit') {
+                save()
+              }
+            }
+          )
     </script>
 
     <style>

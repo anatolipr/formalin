@@ -1,6 +1,9 @@
 import { form } from './data/stores';
 import { formData } from './data/dataStore';
 
+/**
+ * This function is used to expose the form and formData objects to the window object
+ */
 export default function(): void {
 
     (window as any).___form = form;
@@ -34,9 +37,5 @@ export default function(): void {
       (window as any).emitFormEvent = function(event: string, data: any) {
         dispatchEvent(new CustomEvent(event, { detail: data }))
       }
-
-      window.addEventListener('formalinEvent', (e: CustomEvent) => {
-        console.log('formalinEvent', e.detail)
-      })
 
 }

@@ -276,13 +276,13 @@ export function moveSectionUp(sectionIndex: number) {
 }
 
 export function moveSectionDown(sectionIndex: number) {
-    console.log(form.get())
+    
     form.update($form => {
         moveElementDown($form.sections, sectionIndex)
         return $form
     })
 
-    console.log(form.get())
+    
 }
 
 export function moveFieldUp(sectionIndex: number, fieldIndex: number) {
