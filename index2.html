@@ -19,7 +19,7 @@
           .then((data) => {
             formFromJson(data);
 
-            const formId = JSON.parse(data).id;
+            window.formId = JSON.parse(data).id;
 
             const fields = [];
 
