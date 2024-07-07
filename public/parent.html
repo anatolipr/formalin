@@ -22,10 +22,50 @@ function postToFrames(data) {
                 }
                 
                 let text = 'err'
+                console.log('e.data.url', e.data.url)
                 if (atob(e.data.url) === '/secure/nositemesh/checklist/getCheckboxMeta.json?checkBoxId={currentCheckId}') {
-                    text = '{"id":"formData1","sections":[{"description":"","title":"New section","fields":[{"label":"New field","description":"","type":"text","placeholder":"","fieldName":"xxx","required":true,"value":"","validation":""}]}],"buttons":[{"type":"submit","label":"Submit","enabled":true,"value":"submit"}]}';
-                } else if (atob(e.data.url) === '/secure/checklist/eventValues.json?id={instanceEid}&keys=formData1.xxx') {
-                    text = '{"formData1.xxx":"yyy"}';
+                    text = JSON.stringify({
+                        "id": "formData1",
+                        "sections": [
+                            {
+                            "description": "",
+                            "title": "Address",
+                            "fields": [
+                                {
+                                "label": "City",
+                                "description": "",
+                                "type": "text",
+                                "placeholder": "",
+                                "fieldName": "city",
+                                "required": false,
+                                "value": "Notown",
+                                "validation": "[a-zA-Z]*"
+                                },
+                                {
+                                "label": "Street Address",
+                                "description": "",
+                                "type": "text",
+                                "placeholder": "",
+                                "fieldName": "address",
+                                "required": false,
+                                "value": "",
+                                "validation": ""
+                                }
+                            ]
+                            }
+                        ],
+                        "buttons": [
+                            {
+                            "type": "submit",
+                            "label": "Submit",
+                            "enabled": true,
+                            "value": "submit"
+                            }
+                        ]
+                        })
+                    
+                } else if (atob(e.data.url) === '/secure/checklist/eventValues.json?id={instanceEid}&keys=formData1.city,formData1.address') {
+                    text = '{"formData1.address":"yyy"}';
                 }
 
 
