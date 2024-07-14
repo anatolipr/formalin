@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Opener</title>
+
+</head>
+
+<body style="margin: 0; padding: 0;">
+
+    <textarea id="formData">{
+        "id": "formData",
+        "sections": [
+          {
+            "description": "",
+            "title": "Main section",
+            "fields": [
+              {
+                "label": "Full name",
+                "description": "",
+                "type": "text",
+                "placeholder": "eg John Smith",
+                "fieldName": "",
+                "required": false,
+                "value": "",
+                "validation": ""
+              }
+            ]
+          }
+        ],
+        "buttons": [
+          {
+            "type": "submit",
+            "label": "Submit",
+            "enabled": true,
+            "value": "submit"
+          }
+        ]
+      }</textarea>
+
+      <script>
+
+        var currentChannel = 1;
+
+        function params(dataParams) {
+            if (!dataParams) {
+                return dataParams;
+            }
+            stringValue = atob(dataParams);
+            if (stringValue.startsWith('{') && stringValue.endsWith('}')) {
+                return JSON.parse(stringValue);
+            } else if (stringValue !== 'undefined') {
+                return stringValue;
+            } else {
+                return undefined;
+            }
+        }
+
+        function postToFrames(data) {
+            var iframes = document.getElementsByTagName('iframe');
+            for (var i = 0; i < iframes.length; i++) {
+                iframes[i].contentWindow.postMessage(data, '*');
+            }
+        }
+
+        handlers = {
+            /*
+            * Called when the form editor is initialized
+            */
+            'initializeForm': function() {
+                
+                postToFrames({
+                    type: 'func',
+                    func: 'initializeForm' + 'Response',
+                    channel: currentChannel,
+                    params: document.getElementById('formData').value
+                });
+
+            },
+            /* 
+            * Called when the form schema is updated by the editor
+            */
+            'updateForm': function(data) {
+                document.getElementById('formData').value = JSON.stringify(data);
+                postToFrames({
+                    type: 'func',
+                    func: 'updateForm' + 'Response',
+                    channel: currentChannel
+                });
+            },
+        }
+
+        window.addEventListener('message', function(event) {
+            if (event.data.type = 'func' && event.data.func) {
+                if (handlers[event.data.func]) {
+                    handlers[event.data.func](params(event.data.params));
+                } else {
+                    console.error('No handler for function: ' + event.data.func);
+                }
+            }
+        });
+
+      </script>
+
+    <div style="
+            background-color: #00000022; 
+            width: 100vw; 
+            height: 100%; 
+            position: fixed; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;">
+        <iframe src="http://localhost:4000?channel=1"
+            style="width: 1000px; height: 563px;"></iframe>
+    </div>
+    
+
+</body>
+
+
+</html>

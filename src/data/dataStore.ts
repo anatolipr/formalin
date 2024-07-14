@@ -8,6 +8,34 @@ export const formData: Foo<FormDataType> = new Foo({}, 'formData')
 import { form } from './stores'
 import type { FormSection } from './type/formConfigTypes'
 import { registerGlobal } from './util/globalHelper';
+import { callParent, hasParentIntegration } from './util/parentIntegration';
+
+
+if (hasParentIntegration()) {
+
+    (async () => {
+
+        const response = await callParent('initializeForm');
+        
+        console.log('initializeForm response was', response);
+        
+        try {
+            const parsed = JSON.parse(response);
+            form.set(parsed);
+            form.subscribe((nv) => {
+                callParent('updateForm', nv)
+            });
+        } catch (e) {
+            console.error('Error parsing sections', e);
+            alert('Something went wrong. Please try again later')
+        }
+        
+    })()
+
+
+} else {
+    form.subscribe(resetFormData);
+}
 
 export function resetFormData(): void {
     const newFormData: FormDataType  = {};
@@ -24,7 +52,7 @@ export function resetFormData(): void {
     formData.set(newFormData)
 }
 
-form.subscribe(resetFormData);
+
 
 registerGlobal('resetFormData', resetFormData);
 
