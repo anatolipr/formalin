@@ -13,12 +13,10 @@ export default defineConfig({
   ],
   build: {
     outDir: 'dist',
-    emptyOutDir: true,
+    emptyOutDir: false,
     rollupOptions: {
       input: {
-        main: 'index.html',
         main2: 'index2.html',
-        mainEdit: 'indexEdit.html',
       },
       output: {
 
@@ -31,11 +29,9 @@ export default defineConfig({
         
 
         manualChunks(id) {
-          if (id.includes('index.html')) {
-            return 'main';
-          } else if (id.includes('index2.html')) {
-            return 'main2';
-          }
+           if (id.includes('index2.html')) {
+             return 'main2';
+           } 
         },
         
         entryFileNames: '[name].js',

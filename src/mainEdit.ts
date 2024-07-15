@@ -1,9 +1,9 @@
-import App from './AppEdit.svelte'
+import AppEdit from './AppEdit.svelte'
 
 
 document.body.insertAdjacentHTML('beforeend', `<div id="formeditor"></div>`);
 
-const app = new App({
+const app = new AppEdit({
   target: document.getElementById('formeditor')!,
 }) as any;
 
