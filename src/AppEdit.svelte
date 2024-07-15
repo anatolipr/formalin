@@ -9,8 +9,7 @@
     //this is loaded once off
 
     window.addEventListener('message', (event) => {
-        if (event.data.type === 'func' 
-        && event.data.func === 'openFormalin') {
+        if (event.data.type === 'openFormalinEdit') {
             channel = event.data.channel;
             visible = true;
         }
