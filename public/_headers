@@ -1,2 +1,4 @@
+/main.js
+  Access-Control-Allow-Origin: *
 /mainEdit.js
   Access-Control-Allow-Origin: *
