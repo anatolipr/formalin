@@ -1,5 +1,5 @@
 <script>
-    let visible = true;
+    let visible = false;
     let channel = '';
 
     function close() {
@@ -10,8 +10,8 @@
 
     window.addEventListener('message', (event) => {
         if (event.data.type === 'func' 
-        && event.data.func === 'open') {
-            this.channel = event.data.channel;
+        && event.data.func === 'openFormalin') {
+            channel = event.data.channel;
             visible = true;
         }
     });
