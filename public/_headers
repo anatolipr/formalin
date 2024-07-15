@@ -2,3 +2,5 @@
   Access-Control-Allow-Origin: *
 /mainEdit.js
   Access-Control-Allow-Origin: *
+/assets/mainEdit.css
+  Access-Control-Allow-Origin: *
