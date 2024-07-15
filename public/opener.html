@@ -2,8 +2,8 @@
 <html>
 <head>
     <title>Opener</title>
-    <script type="module" src="https://formalin.netlify.app/mainEdit.js"></script>
-    <link rel="stylesheet" href="https://formalin.netlify.app/assets/mainEdit.css"></script>
+    <script type="module" crossorigin src="https://formalin.netlify.app/mainEdit.js"></script>
+    <link rel="stylesheet" crossorigin href="https://formalin.netlify.app/assets/mainEdit.css"></script>
 </head>
 
 <body style="margin: 0; padding: 0;">
@@ -91,7 +91,7 @@
         }
 
         window.addEventListener('message', function(event) {
-            if (event.data.type = 'func' && event.data.func) {
+            if (event.data.type === 'func' && event.data.func) {
                 if (handlers[event.data.func]) {
                     handlers[event.data.func](params(event.data.params));
                 } else {
@@ -101,6 +101,7 @@
         });
 
         function openFormalin(channel) {
+            currentChannel = channel;
             window.postMessage({
                 type: 'openFormalinEdit',
                 channel: channel
