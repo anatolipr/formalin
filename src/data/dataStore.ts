@@ -5,7 +5,7 @@ type FormDataType = {[key:string]:string};
 
 export const formData: Foo<FormDataType> = new Foo({}, 'formData')
 
-import { form } from './stores'
+import { addSection, form } from './stores'
 import type { FormSection } from './type/formConfigTypes'
 import { registerGlobal } from './util/globalHelper';
 import { callParent, hasParentIntegration } from './util/parentIntegration';
@@ -20,8 +20,25 @@ if (hasParentIntegration()) {
         console.log('initializeForm response was', response);
         
         try {
-            const parsed = JSON.parse(response);
-            form.set(parsed);
+            if (!!((response || '').trim())) {
+
+                const parsed = JSON.parse(response);
+                if (parsed.sections && Array.isArray(parsed.sections)) {
+                    form.set(parsed);
+                } else {
+                    addSection();
+                    resetFormData();
+                    callParent('updateForm', form.get());
+                }
+
+            } else {
+                console.log('No form data found. Initializing');
+                addSection();
+                resetFormData();
+                callParent('updateForm', form.get());
+                console.log('Form data initialized', form.get());
+            }
+
             form.subscribe((nv) => {
                 callParent('updateForm', nv)
             });
