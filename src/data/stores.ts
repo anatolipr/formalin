@@ -32,55 +32,9 @@ export function updateFormId(id: string) {
     })
 }
 
-export function addButton(button: Button) {
-    form.update($form => {
-        $form.buttons?.push(button)
-        return $form
-    })
-}
 
-export function removeButton(index: number) {
-    form.update($form => {
-        $form.buttons?.splice(index, 1)
-        return $form
-    })
-}
 
-export function updateButtonLabel(index: number, label: string) {
-    form.update($form => {
-        if ($form.buttons !== undefined) {
-            $form.buttons[index].label = label
-        }
-        return $form
-    })
-}
 
-export function updateButtonEnabled(index: number, enabled: boolean) {
-    form.update($form => {
-        if ($form.buttons !== undefined) {
-            $form.buttons[index].enabled = enabled
-        }
-        return $form
-    })
-}
-
-export function updateButtonType(index: number, type: string) {
-    form.update($form => {
-        if ($form.buttons !== undefined) {
-            $form.buttons[index].type = type
-        }
-        return $form
-    })
-}
-
-export function updateButtonEvent(index: number, event: string) {
-    form.update($form => {
-        if ($form.buttons !== undefined) {
-            $form.buttons[index].event = event
-        }
-        return $form
-    })
-}
 
 
 function newSection(): FormSection {

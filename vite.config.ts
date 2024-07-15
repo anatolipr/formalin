@@ -18,6 +18,7 @@ export default defineConfig({
       input: {
         main: 'index.html',
         main2: 'index2.html',
+        mainEdit: 'indexEdit.html',
       },
       output: {
 
