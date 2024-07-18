@@ -40,16 +40,16 @@
 
       <script>
 
-        globalThis[Symbol.for('formalinGetFormSchemaJsonAsString')] = function() {
+        window['formalinGetFormSchemaJsonAsString'] = function() {
+            console.log("formalinGetFormSchemaJsonAsString -> formalinGetCurrentChannel() -> ", formalinGetCurrentChannel());  
             return document.getElementById('formData').value;
         };
 
-        globalThis[Symbol.for('formalinSetFormSchemaJsonAsString')] = function(data) {
-            console.log("formalinSetFormSchemaJsonAsString -> getFormalinCurrentChannel() -> ", getFormalinCurrentChannel());  
+        window['formalinSetFormSchemaJsonAsString'] = function(data) {
+            console.log("formalinSetFormSchemaJsonAsString -> formalinGetCurrentChannel() -> ", formalinGetCurrentChannel());  
             document.getElementById('formData').value = 
                 (typeof data === 'string') ? data : JSON.stringify(data);
         };
-
         
       </script>
 

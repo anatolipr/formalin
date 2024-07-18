@@ -50,8 +50,8 @@ const handlers: {[k: string]: (p?: any) => void} = {
    
 
         //const params = document.getElementById('formData').value;
-        if ((globalThis as any)[Symbol.for('formalinGetFormSchemaJsonAsString')]) {
-            const params = (globalThis as any)[Symbol.for('formalinGetFormSchemaJsonAsString')]();
+        if ((globalThis as any)['formalinGetFormSchemaJsonAsString']) {
+            const params = (globalThis as any)['formalinGetFormSchemaJsonAsString']();
             sendResponse('initializeForm', params);
         } else {
             console.warn('formalinGetFormSchemaJsonAsString not defined');
@@ -63,8 +63,8 @@ const handlers: {[k: string]: (p?: any) => void} = {
     * Called when the form schema is updated by the editor
     */
     'updateForm': function(data: any) {
-        if ((globalThis as any)[Symbol.for('formalinSetFormSchemaJsonAsString')]) {
-            (globalThis as any)[Symbol.for('formalinSetFormSchemaJsonAsString')](data);
+        if ((globalThis as any)['formalinSetFormSchemaJsonAsString']) {
+            (globalThis as any)['formalinSetFormSchemaJsonAsString'](data);
         } else {
             console.warn('formalinSetFormSchemaJsonAsString not defined');
         }
@@ -88,7 +88,7 @@ window.addEventListener('message', function(event) {
  * @param channel the channel
  */
 
-(globalThis as any)['openFormalin'] = function (channel: string): void {
+(globalThis as any)['formalinOpen'] = function (channel: string): void {
     currentChannel = channel;
     window.postMessage({
         type: 'openFormalinEdit',
@@ -96,6 +96,6 @@ window.addEventListener('message', function(event) {
     });
 };
 
-(globalThis as any)['getFormalinCurrentChannel'] = function (): string {
+(globalThis as any)['formalinGetCurrentChannel'] = function (): string {
     return currentChannel;
 }
