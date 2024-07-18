@@ -40,74 +40,17 @@
 
       <script>
 
-        var currentChannel = 1;
+        globalThis[Symbol.for('formalinGetFormSchemaJsonAsString')] = function() {
+            return document.getElementById('formData').value;
+        };
 
-        function params(dataParams) {
-            if (!dataParams) {
-                return dataParams;
-            }
-            stringValue = atob(dataParams);
-            if (stringValue.startsWith('{') && stringValue.endsWith('}')) {
-                return JSON.parse(stringValue);
-            } else if (stringValue !== 'undefined') {
-                return stringValue;
-            } else {
-                return undefined;
-            }
-        }
+        globalThis[Symbol.for('formalinSetFormSchemaJsonAsString')] = function(data) {
+            console.log("formalinSetFormSchemaJsonAsString -> getFormalinCurrentChannel() -> ", getFormalinCurrentChannel());  
+            document.getElementById('formData').value = 
+                (typeof data === 'string') ? data : JSON.stringify(data);
+        };
 
-        function postToFrames(data) {
-            var iframes = document.getElementsByTagName('iframe');
-            for (var i = 0; i < iframes.length; i++) {
-                iframes[i].contentWindow.postMessage(data, '*');
-            }
-        }
-
-        handlers = {
-            /*
-            * Called when the form editor is initialized
-            */
-            'initializeForm': function() {
-                
-                postToFrames({
-                    type: 'func',
-                    func: 'initializeForm' + 'Response',
-                    channel: currentChannel,
-                    params: document.getElementById('formData').value
-                });
-
-            },
-            /* 
-            * Called when the form schema is updated by the editor
-            */
-            'updateForm': function(data) {
-                document.getElementById('formData').value = JSON.stringify(data);
-                postToFrames({
-                    type: 'func',
-                    func: 'updateForm' + 'Response',
-                    channel: currentChannel
-                });
-            },
-        }
-
-        window.addEventListener('message', function(event) {
-            if (event.data.type === 'func' && event.data.func) {
-                if (handlers[event.data.func]) {
-                    handlers[event.data.func](params(event.data.params));
-                } else {
-                    console.error('No handler for function: ' + event.data.func);
-                }
-            }
-        });
-
-        function openFormalin(channel) {
-            currentChannel = channel;
-            window.postMessage({
-                type: 'openFormalinEdit',
-                channel: channel
-            });
-        }
-
+        
       </script>
 
     
