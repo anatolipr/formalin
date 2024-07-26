@@ -82,14 +82,19 @@
               b: formDataForBackend
             }, '*')
 
+            window.submitted = false;
+
             window.addEventListener('message', (e) => {
               if (e.data.method === 'bulkRuleUpdateResponse') {
                 window.parent.postMessage('MARK_AS_COMPLETE_AND_GO_TO_NEXT_CHECK', '*');
+                window.submitted = true;
               }
             })
           
             setTimeout(() => {
-              window.parent.postMessage('MARK_AS_COMPLETE_AND_GO_TO_NEXT_CHECK', '*');
+              if (! window.submitted) {
+                window.parent.postMessage('MARK_AS_COMPLETE_AND_GO_TO_NEXT_CHECK', '*');
+              }
             }, 2000)
             
           }
