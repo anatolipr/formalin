@@ -26,14 +26,14 @@ if (hasParentIntegration()) {
                 if (parsed.sections && Array.isArray(parsed.sections)) {
                     form.set(parsed);
                 } else {
-                    addSection();
+                    
                     resetFormData();
                     callParent('updateForm', form.get());
                 }
 
             } else {
                 console.log('No form data found. Initializing');
-                addSection();
+                
                 resetFormData();
                 callParent('updateForm', form.get());
                 console.log('Form data initialized', form.get());
