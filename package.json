@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite -c vite.configMain.js --port=4000",
     "build": "rm -rf dist && vite build -c vite.configMain.js && vite build -c vite.configMain2.js && vite build -c vite.configEdit.js",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json"
