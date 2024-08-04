@@ -1,3 +1,4 @@
+<!-- FormEditor.svelte -->
 <script lang="ts">
 
     import {
@@ -18,6 +19,7 @@
         updateFieldValidation,
         updateFieldType,
         updateFeildPlaceholder,
+        updateSectionMulti,
         moveSectionDown,
         moveSectionUp,
         moveFieldDown,
@@ -66,7 +68,7 @@
     <div style="gap: 5px; margin: auto; display: flex">
         <div class="formalin-section">
             <div style="cursor: copy" on:click="{copyDefinition}">
-                Form Definition
+                Form Definition&nbsp;📋
             </div>
             <div
                 style="width: 545px; height: 422px; border: 1px solid gray; display: flex; overflow: scroll">
@@ -163,6 +165,17 @@
                                 '!seven' will be true for any value but 'seven'.
                                 Tip only '!' results in &lt;not empty&gt;
                             </div>
+                        </div>
+                        <div class="fieldline">
+                            <div class="form-title">
+                                multi-section (coming soon)
+                            </div>
+                            <input
+                                style="width: 24px; height: 24px; margin: 0"
+                                type="checkbox"
+                                value="true"
+                                checked="{$form.sections[sectionIndex].multi}"
+                                on:input="{e => updateSectionMulti(sectionIndex, e.target.checked)}" />
                         </div>
                         <div
                             style="padding: 16px; flex-direction: column; gap: 20px; display: flex">

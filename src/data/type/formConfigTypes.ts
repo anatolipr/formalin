@@ -85,10 +85,12 @@ export type FormField = {
 
 
 export type FormSection = {
+    id: string;
     title: string;
     description: string;
     condition?: Condition;
-    fields: FormField[]
+    fields: FormField[];
+    multi: boolean
 }
 
 export type Button = {

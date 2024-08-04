@@ -32,14 +32,25 @@ export function updateFormId(id: string) {
     })
 }
 
+export function updateSectionMulti(sectionIndex: number, multi: boolean) {
+    form.update($form => {
+        $form.sections[sectionIndex].multi = multi
+        return $form
+    })
+}
 
-
-
-
+let sectionId = 0;
+function getNextSectionId(): string {
+    return 's' + sectionId++;
+}
 
 function newSection(): FormSection {
     return {
-        description: '', title: 'New section', fields: [
+        id: getNextSectionId(),
+        description: '', 
+        title: 'New section',
+        multi: false,
+        fields: [
             newField()
         ]
     };
