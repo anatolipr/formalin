@@ -34,7 +34,7 @@ function isInNewWindow(): boolean {
  * @returns boolean
  */
 export function hasParentIntegration(): boolean {
-    console.log('hasParentIntegration', getParentIntegrationDetails());
+    //console.log('hasParentIntegration', getParentIntegrationDetails());
     return getParentIntegrationDetails().channel !== '' 
     && (getParentIntegrationDetails().iFrame || getParentIntegrationDetails().opener);
 }

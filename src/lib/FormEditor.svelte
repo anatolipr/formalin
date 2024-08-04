@@ -32,26 +32,42 @@
 
     } from "../data/stores";
 
-
     import Options from "./Options.svelte";
     import { TypeOptions, supportsOptions, supportsPlaceholder, supportsPattern, supportsValue } from "../data/type/formConfigTypes";
     import OptionInput from "./OptionInput.svelte";
 
     import DynamicForm from "./components/DynamicForm.svelte";
-    addSection();
+    import { hasParentIntegration } from "../data/util/parentIntegration";
 
-    function itemClick(e) {
+    const hasParent = hasParentIntegration();
+
+    function itemClick(e: CustomEvent) {
         // update navigation hash to go to the correct section
         location.hash = `anchor${e.detail}`;
     }
+
+    function close() {
+        window.parent.postMessage({ type: 'closeFormalinEdit' }, '*');
+    }
+
+    addSection();
 </script>
 
 <div
     style="position: relative; flex-direction: column; gap: 15px; display: flex">
-    <div style="padding: 0px; font-size: 13px">form-a-lin</div>
+    <div style="gap: 18px; display: flex">
+        <div style="padding: 0px; font-size: 13px; flex: 1">
+            form schema editor
+        </div>
+        {#if hasParent}
+        <div class="formalin-close">close</div>
+        {/if}
+    </div>
     <div style="gap: 5px; margin: auto; display: flex">
         <div class="formalin-section">
-            <div on:click="{copyDefinition}">Form Definition</div>
+            <div style="cursor: copy" on:click="{copyDefinition}">
+                Form Definition
+            </div>
             <div
                 style="width: 545px; height: 422px; border: 1px solid gray; display: flex; overflow: scroll">
                 <div
@@ -384,5 +400,12 @@
     .round-btn:active {
       background-color: #000000;
     }
+    .formalin-close {
+      padding: 0px;
+      font-size: 13px;
+      margin: auto;
+      cursor: pointer
+    }
+
     * {box-sizing: border-box}
 </style>
