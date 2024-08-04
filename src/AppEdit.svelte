@@ -14,6 +14,12 @@
             visible = true;
         }
     });
+
+    window.addEventListener('message', (event) => {
+        if (event.data.type === 'closeFormalinEdit') {
+            close();
+        }
+    });
 </script>
 
 {#if visible}
