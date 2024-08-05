@@ -45,6 +45,7 @@
 
     function itemClick(e: CustomEvent) {
         // update navigation hash to go to the correct section
+        location.hash = ``;
         location.hash = `anchor${e.detail}`;
     }
 
@@ -62,7 +63,7 @@
             form schema editor
         </div>
         {#if hasParent}
-        <div class="formalin-close">close</div>
+        <div class="formalin-close" on:click="{() => close()}">close</div>
         {/if}
     </div>
     <div style="gap: 5px; margin: auto; display: flex">
@@ -167,9 +168,7 @@
                             </div>
                         </div>
                         <div class="fieldline">
-                            <div class="form-title">
-                                multi-section (coming soon)
-                            </div>
+                            <div class="form-title">multi-section</div>
                             <input
                                 style="width: 24px; height: 24px; margin: 0"
                                 type="checkbox"

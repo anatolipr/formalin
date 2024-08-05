@@ -1,205 +1,245 @@
 <!-- DynamicForm.svelte -->
 <script lang="ts">
 
-  import { form } from "../../data/stores.js";
-  import { formData, updateFormData, meetsCondition } from "../../data/dataStore.js";
-  import FormTextInput from "./FormTextInput.svelte";
-  import FormRadiosInput from "./FormRadiosInput.svelte";
-  import FormDropdownInput from "./FormDropdownInput.svelte";
-  import FormCheckboxesInput from "./FormCheckboxesInput.svelte";
-  import FormTitle from "./FormTitle.svelte";
-  import FormTextareaInput from "./FormTextareaInput.svelte";
-  import type { Type } from "../../data/type/formConfigTypes.js";
-  import type { ComponentType } from "svelte";
-  import { createEventDispatcher } from "svelte";
+    import { form } from "../../data/stores.js";
+    import { generateNumberList } from "../../data/util/arrayUtil.js";
+    import { formData, updateFormData, meetsCondition, sectionRepeats, addRepeat, removeRepeat } from "../../data/dataStore.js";
+    import FormTextInput from "./FormTextInput.svelte";
+    import FormRadiosInput from "./FormRadiosInput.svelte";
+    import FormDropdownInput from "./FormDropdownInput.svelte";
+    import FormCheckboxesInput from "./FormCheckboxesInput.svelte";
+    import FormTitle from "./FormTitle.svelte";
+    import FormTextareaInput from "./FormTextareaInput.svelte";
+    import type { Type } from "../../data/type/formConfigTypes.js";
+    import type { ComponentType } from "svelte";
+    import { createEventDispatcher } from "svelte";
 
-  const dispatch = createEventDispatcher();
+    const dispatch = createEventDispatcher();
 
-  const typeMap: Record<Type, ComponentType> = {
-    'text': FormTextInput,
-    'textarea': FormTextareaInput,
-    'number': FormTextInput,
-    'date': FormTextInput,
-    'radios': FormRadiosInput,
-    'dropdown': FormDropdownInput,
-    'checkboxes': FormCheckboxesInput,
-    'title': FormTitle
-  };
+    const typeMap: Record<Type, ComponentType> = {
+      'text': FormTextInput,
+      'textarea': FormTextareaInput,
+      'number': FormTextInput,
+      'date': FormTextInput,
+      'radios': FormRadiosInput,
+      'dropdown': FormDropdownInput,
+      'checkboxes': FormCheckboxesInput,
+      'title': FormTitle
+    };
 
-  function dispatchSectionClick(sectionIndex: number) {
-    dispatch('itemClick', sectionIndex);
-  }
-
-  function dispatchFieldClick(sectionIndex: number, fieldIndex: number) {
-    dispatch('itemClick', `${sectionIndex}_${fieldIndex}`);
-  }
-
-  function submit(e: SubmitEvent): void {
-    const formEl: HTMLFormElement = e.target as HTMLFormElement;
-    
-    const formData = new FormData(formEl);
-    
-    if (e.submitter) {
-      const submitter = e.submitter as HTMLInputElement;
-      formData.append(submitter.name, submitter.value);
-    }
-    
-    const action = formData.get('action');
-
-    if (action === 'submit') {
-      formEl.reportValidity();
+    function dispatchSectionClick(sectionIndex: number) {
+      dispatch('itemClick', sectionIndex);
     }
 
-    document.dispatchEvent(new CustomEvent('formalinSubmit', {
-      detail: {
-        formId: formEl.name,
-        action, formData
+    function dispatchFieldClick(sectionIndex: number, fieldIndex: number) {
+      dispatch('itemClick', `${sectionIndex}_${fieldIndex}`);
+    }
+
+    function submit(e: SubmitEvent): void {
+      const formEl: HTMLFormElement = e.target as HTMLFormElement;
+
+      const formData = new FormData(formEl);
+
+      if (e.submitter) {
+        const submitter = e.submitter as HTMLInputElement;
+        formData.append(submitter.name, submitter.value);
       }
-    }));
 
-    e.preventDefault();
-  }
+      const action = formData.get('action');
+
+      if (action === 'submit') {
+        formEl.reportValidity();
+      }
+
+      document.dispatchEvent(new CustomEvent('formalinSubmit', {
+        detail: {
+          formId: formEl.name,
+          action, formData
+        }
+      }));
+
+      e.preventDefault();
+    }
 </script>
 
-<!-- class="form-secondary-button" -->
+<!-- class="form-secondary-button dynamic-form-multi-field" -->
 <form
-  style="overflow: scroll"
-  class="dynamic-form-container"
-  on:submit="{submit}"
-  name="{$form.id}">
-  {#if $form.title}
-  <div>
-      <div class="dynamic-form-head">{$form.title || ''}</div>
-      <div class="dynamic-form-main-description">
-          {$form.description || ''}
-      </div>
-  </div>
-  {/if} {#each $form.sections as section, sectionIndex} {#if
-  meetsCondition($form.sections[sectionIndex].condition, $formData)}
-  <div class="dynamic-form-section">
-      <div>
-          <div
-              class="dynamic-form-title"
-              on:click="{() => dispatchSectionClick(sectionIndex)}">
-              {$form.sections[sectionIndex].title}
-          </div>
-          <div class="dynamic-form-description">
-              {$form.sections[sectionIndex].description}
-          </div>
-      </div>
-      {#each $form.sections[sectionIndex].fields as field, fieldIndex} {#if
-      meetsCondition($form.sections[sectionIndex].fields[fieldIndex].condition,
-      $formData)}
-      <div class="dynamic-form-fields">
-          <div style="overflow: scroll" class="dynamic-form-field-label">
-              <div
-                  class="dynamic-form-field-title"
-                  style:display="{$form.sections[sectionIndex].fields[fieldIndex].type === 'title' ? 'none' : null}"
-                  on:click="{() => dispatchFieldClick(sectionIndex, fieldIndex)}">
-                  {$form.sections[sectionIndex].fields[fieldIndex].label}
-              </div>
-              <svelte:component on:input={e =>
-              updateFormData($form.sections[sectionIndex].fields[fieldIndex].fieldName,
-              e.detail)}
-              fieldDef={$form.sections[sectionIndex].fields[fieldIndex]}
-              value={$formData[$form.sections[sectionIndex].fields[fieldIndex].fieldName]
-              || ''}
-              this="{typeMap[$form.sections[sectionIndex].fields[fieldIndex].type]}"
-              />
-              <div
-                  class="dynamic-form-description"
-                  style:display="{!$form.sections[sectionIndex].fields[fieldIndex].description ? 'none' : null}">
-                  {$form.sections[sectionIndex].fields[fieldIndex].description}
-              </div>
-          </div>
-      </div>
-      {/if} {/each}
-  </div>
-  {/if} {/each} {#if $form.buttons && $form.buttons.length > 0}
-  <div style="gap: 4px; display: flex">
-      {#each $form.buttons as button}
-      <button
-          class="form-button"
-          class:form-secondary-button="{button.value !== 'submit'}"
-          name="action"
-          value="{button.value}"
-          type="submit">
-          {button.label}
-      </button>
-      {/each}
-  </div>
-  {/if}
+    style="overflow: scroll"
+    class="dynamic-form-container"
+    on:submit="{submit}"
+    name="{$form.id}">
+    {#if $form.title}
+    <div>
+        <div class="dynamic-form-head">{$form.title || ''}</div>
+        <div class="dynamic-form-main-description">
+            {$form.description || ''}
+        </div>
+    </div>
+    {/if} {#each $form.sections as section, sectionIndex} {#if
+    meetsCondition($form.sections[sectionIndex].condition, $formData)}
+    <div class="dynamic-form-section">
+        <div>
+            <div
+                class="dynamic-form-title"
+                on:click="{() => dispatchSectionClick(sectionIndex)}">
+                {$form.sections[sectionIndex].title}
+            </div>
+            <div class="dynamic-form-description">
+                {$form.sections[sectionIndex].description}
+            </div>
+        </div>
+        {#each generateNumberList(sectionRepeats(sectionIndex)) as inputIndex}
+        <div>
+            {#if $form.sections[sectionIndex].multi}
+            <div style="display: flex">
+                <div style="flex: 1">
+                    {inputIndex + '/' + sectionRepeats(sectionIndex)}
+                </div>
+                <div
+                    style="cursor: pointer"
+                    on:click="{() => removeRepeat(sectionIndex, inputIndex)}">
+                    remove
+                </div>
+            </div>
+            {/if}
+            <div
+                class:dynamic-form-multi-field="{$form.sections[sectionIndex].multi}">
+                {#each $form.sections[sectionIndex].fields as field, fieldIndex}
+                {#if
+                meetsCondition($form.sections[sectionIndex].fields[fieldIndex].condition,
+                $formData, $form.sections[sectionIndex].multi ? inputIndex :
+                undefined)}
+                <div class="dynamic-form-fields">
+                    <div
+                        style="overflow: scroll"
+                        class="dynamic-form-field-label">
+                        <div
+                            class="dynamic-form-field-title"
+                            style:display="{$form.sections[sectionIndex].fields[fieldIndex].type === 'title' ? 'none' : null}"
+                            on:click="{() => dispatchFieldClick(sectionIndex, fieldIndex)}">
+                            {$form.sections[sectionIndex].fields[fieldIndex].label}
+                        </div>
+                        <svelte:component on:input={e =>
+                        updateFormData($form.sections[sectionIndex].fields[fieldIndex].fieldName
+                        +
+                        ($form.sections[sectionIndex].fields[fieldIndex].fieldName
+                        && $form.sections[sectionIndex].multi ? inputIndex :
+                        ''), e.detail)}
+                        fieldDef={$form.sections[sectionIndex].fields[fieldIndex]}
+                        value={ ( $form.sections[sectionIndex].multi ?
+                        $formData[$form.sections[sectionIndex].fields[fieldIndex].fieldName
+                        + inputIndex] :
+                        $formData[$form.sections[sectionIndex].fields[fieldIndex].fieldName]
+                        ) || ''}
+                        this="{typeMap[$form.sections[sectionIndex].fields[fieldIndex].type]}"
+                        />
+                        <div
+                            class="dynamic-form-description"
+                            style:display="{!$form.sections[sectionIndex].fields[fieldIndex].description ? 'none' : null}">
+                            {$form.sections[sectionIndex].fields[fieldIndex].description}
+                        </div>
+                    </div>
+                </div>
+                {/if} {/each}
+            </div>
+        </div>
+        {/each} {#if $form.sections[sectionIndex].multi}
+        <div
+            style="width: 64px; height: 30px; border: 1px solid gray; display: flex; align-items: center; justify-content: center; cursor: pointer"
+            on:click="{() => addRepeat(sectionIndex)}">
+            add
+        </div>
+        {/if}
+    </div>
+    {/if} {/each} {#if $form.buttons && $form.buttons.length > 0}
+    <div style="gap: 4px; display: flex">
+        {#each $form.buttons as button}
+        <button
+            class="form-button"
+            class:form-secondary-button="{button.value !== 'submit'}"
+            name="button"
+            value="{button.value}"
+            type="submit">
+            {button.label}
+        </button>
+        {/each}
+    </div>
+    {/if}
 </form>
 
 <style>
-  .dynamic-form-container {
-    padding: 8px;
-    flex-direction: column;
-    gap: 16px;
-    display: flex
-  }
+    .dynamic-form-container {
+      padding: 8px;
+      flex-direction: column;
+      gap: 16px;
+      display: flex
+    }
 
-  .dynamic-form-section {
-    flex-direction: column;
-    gap: 4px;
-    display: flex;
-  }
+    .dynamic-form-section {
+      flex-direction: column;
+      gap: 4px;
+      display: flex;
+    }
 
-  .dynamic-form-title {
-    font-size: 25px;
-    font-weight: 700;
-  }
+    .dynamic-form-title {
+      font-size: 25px;
+      font-weight: 700;
+    }
 
-  .dynamic-form-fields {
-    gap: 16px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column
-  }
+    .dynamic-form-fields {
+      gap: 16px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
 
-  .dynamic-form-field-label {
-    flex-direction: column;
-    gap: 5px;
-    display: flex;
-  }
+    .dynamic-form-field-label {
+      flex-direction: column;
+      gap: 5px;
+      display: flex;
+    }
 
-  .dynamic-form-description {
-    font-size: 14px;
-  }
+    .dynamic-form-description {
+      font-size: 14px;
+    }
 
-  .dynamic-form-head {
-    font-size: 30px;
-    font-weight: 800;
-  }
+    .dynamic-form-head {
+      font-size: 30px;
+      font-weight: 800;
+    }
 
-  .dynamic-form-main-description {
-    font-size: 17px;
-    font-weight: 300;
-  }
+    .dynamic-form-main-description {
+      font-size: 17px;
+      font-weight: 300;
+    }
 
-  .dynamic-form-field-title {
-    font-size: 18px;
-  }
+    .dynamic-form-field-title {
+      font-size: 18px;
+    }
 
-  .form-button {
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 8px;
-    padding-bottom: 9px;
-    border-radius: 6px;
-    background-color: #005baa;
-    cursor: pointer;
-    display: flex;
-    color: #ffffff;
-    align-items: center;
-    justify-content: center;
-  }
+    .form-button {
+      padding-left: 12px;
+      padding-right: 12px;
+      padding-top: 8px;
+      padding-bottom: 9px;
+      border-radius: 6px;
+      background-color: #005baa;
+      cursor: pointer;
+      display: flex;
+      color: #ffffff;
+      align-items: center;
+      justify-content: center;
+    }
 
-  .form-secondary-button {
-    background: none;
-    color: unset;
-    border: none;
-  }
+    .form-secondary-button {
+      background: none;
+      color: unset;
+      border: none;
+    }
 
-  * {box-sizing: border-box}
+    .dynamic-form-multi-field {
+      border-left: 2px solid;
+    }
+
+    * {box-sizing: border-box}
 </style>

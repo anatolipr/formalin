@@ -1,5 +1,5 @@
 import Foo from 'avos/src/foo-store/foo.js'
-import type {  Button, Condition, Form, FormField, FormSection, Option, Type } from './type/formConfigTypes'
+import type {  Button, Form, FormField, FormSection, Option, Type } from './type/formConfigTypes'
 import { insertAtPosition, moveElementDown, moveElementUp } from './util/arrayUtil'
 import { copyToClipboard } from './util/clipboard'
 

@@ -1,11 +1,11 @@
 import Foo from 'avos/src/foo-store/foo.js'
-import type { Condition } from './type/formConfigTypes';
+import type { Condition, FormField } from './type/formConfigTypes';
 
 type FormDataType = {[key:string]:string};
 
 export const formData: Foo<FormDataType> = new Foo({}, 'formData')
 
-import { addSection, form } from './stores'
+import { form } from './stores'
 import type { FormSection } from './type/formConfigTypes'
 import { registerGlobal } from './util/globalHelper';
 import { callParent, hasParentIntegration } from './util/parentIntegration';
@@ -84,16 +84,95 @@ export function updateFormData(fieldName: string, value: string): void {
     })
 }
 
-export function meetsCondition(condition: Condition | undefined, fd: any): boolean {
+export function meetsCondition(condition: Condition | undefined, fd: any, inputIndex: number | undefined): boolean {
     if (!condition || !condition.fieldName) {
         return true;
     }
 
     const { fieldName, requiredValue } = condition;
 
+    const fieldToUse = inputIndex === undefined ? fieldName : `${fieldName}${inputIndex}`;
+
+    const fieldValue = formData.get()[fieldToUse];
+
     if (requiredValue?.startsWith('!')) {
-        return formData.get()[fieldName] != requiredValue.substring(1);
+        return fieldValue != requiredValue.substring(1);
     }
 
-    return formData.get()[fieldName] == requiredValue;
+    return fieldValue == requiredValue;
+}
+
+export function sectionRepeats(sectionIndex: number): number {
+
+    const $form = form.get();
+
+    const sectionId = $form.sections[sectionIndex].id;
+
+    return parseInt(formData.get()[`_sr_${sectionId}`]) || 1;
+}
+
+export function addRepeat(sectionIndex: number): void {
+    const $form = form.get();
+
+    const sectionId = $form.sections[sectionIndex].id;
+    const currentRepeats = sectionRepeats(sectionIndex);
+
+    const repeats = currentRepeats + 1;
+
+    setSectionRepeats(sectionId, repeats);
+}
+
+function setSectionRepeats(sectionId: string, repeats: number) {
+    formData.update($formData => {
+        $formData[`_sr_${sectionId}`] = repeats + '';
+        return $formData;
+    });
+}
+
+export function removeRepeat(sectionIndex: number, inputIndex: number) {
+    
+    if (! confirm(`Remove ${inputIndex}?`)) {
+        return;
+    }
+
+    const $form = form.get();
+    const fields: FormField[] = $form.sections[sectionIndex].fields;
+
+    const sectionId = $form.sections[sectionIndex].id;
+    const currentRepeats = sectionRepeats(sectionIndex);
+
+    if (currentRepeats < 1) {
+        return;
+    }
+
+    formData.update($formData => {
+
+        let currentValues = [];
+
+        for (let i = 1; i <= currentRepeats; i++) {
+            let fieldValues: {[k: string]: string} = {};
+
+            fields.filter(f => !!f.fieldName).forEach(field => {
+                const fieldName = `${field.fieldName}${i}`;
+                fieldValues[field.fieldName] = $formData[fieldName];
+                delete $formData[fieldName];
+            });
+            currentValues.push(fieldValues);
+        }
+
+        currentValues.splice(inputIndex - 1, 1);
+
+        for (let i = 0; i < currentValues.length; i++) {
+            const fieldValues = currentValues[i];
+            Object.keys(fieldValues).forEach(fieldName => {
+                const newFieldName = `${fieldName}${i + 1}`;
+                $formData[newFieldName] = fieldValues[fieldName];
+            });
+        }
+
+        setSectionRepeats(sectionId, currentRepeats - 1);
+        return $formData;
+    });
+
+    
 }

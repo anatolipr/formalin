@@ -1,5 +1,5 @@
 import { expect, describe, it } from 'vitest'
-import { insertAtPosition, moveElement } from './arrayUtil'
+import { generateNumberList, insertAtPosition, moveElement } from './arrayUtil'
 
 describe('insert at position tests', () => {
     it('should insert an element at a position', () => {
@@ -36,3 +36,12 @@ describe('moveElement functionality', () => {
 
 
 
+describe('arrayList', () => {
+    it('should generate a list of numbers', () => {
+        expect(generateNumberList(5)).toEqual([1,2,3,4,5])
+    })
+
+    it('should return an empty array when size is less than 1', () => {
+        expect(generateNumberList(0)).toEqual([])
+    })
+})

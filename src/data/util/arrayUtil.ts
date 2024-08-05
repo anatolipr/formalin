@@ -29,3 +29,7 @@ export function moveElementDown<T>(array: T[], index: number): T[] {
     }
     return moveElement(array, index, index + 1);
 }
+
+export function generateNumberList(size: number): number[] {
+    return size < 1 ? [] : Array.from({ length: size }, (v, i) => i + 1);
+}
