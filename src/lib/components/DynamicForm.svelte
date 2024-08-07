@@ -157,7 +157,7 @@
       <button
           class="form-button"
           class:form-secondary-button="{button.value !== 'submit'}"
-          name="button"
+          name="action"
           value="{button.value}"
           type="submit">
           {button.label}
