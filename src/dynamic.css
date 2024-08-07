@@ -1,48 +1,102 @@
+/*use Muli font*/
+@import url("https://fonts.googleapis.com/css2?family=Muli:wght@300;400;700;800&display=swap");
+
+select,
+input {
+  border-radius: 5px;
+}
+
+/**
+ * Dynamic form styles
+ */
+
 .dynamic-form-container {
-    padding: 8px;
-    flex-direction: column;
-    gap: 16px;
-    display: flex
-  }
+  font-family: "Muli", sans-serif;
+  padding: 8px;
+  flex-direction: column;
+  gap: 16px;
+  display: flex;
+}
 
-  .dynamic-form-section {
-    flex-direction: column;
-    gap: 4px;
-    display: flex;
-  }
+.dynamic-form-section {
+  flex-direction: column;
+  gap: 10px;
+  display: flex;
+}
 
-  .dynamic-form-title {
-    font-size: 25px;
-    font-weight: 700;
-  }
+.dynamic-form-title {
+  font-size: 25px;
+  font-weight: 700;
+}
 
-  .dynamic-form-fields {
-    gap: 16px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column
-  }
+.dynamic-form-fields {
+  gap: 16px;
+  display: flex;
+  flex-direction: column;
+}
 
-  .dynamic-form-field-label {
-    flex-direction: column;
-    gap: 5px;
-    display: flex;
-  }
+.dynamic-form-field-label {
+  flex-direction: column;
+  gap: 5px;
+  display: flex;
+}
 
-  .dynamic-form-description {
-    font-size: 14px;
-  }
+.dynamic-form-description {
+  font-size: 14px;
+}
 
-  .dynamic-form-head {
-    font-size: 30px;
-    font-weight: 800;
-  }
+.dynamic-form-head {
+  font-size: 30px;
+  font-weight: 800;
+}
 
-  .dynamic-form-main-description {
-    font-size: 17px;
-    font-weight: 300;
-  }
+.dynamic-form-main-description {
+  font-size: 17px;
+  font-weight: 300;
+}
 
-  .dynamic-form-field-title {
-    font-size: 18px;
-  }
+.dynamic-form-field-title {
+  font-size: 18px;
+}
+
+.form-button {
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 8px;
+  padding-bottom: 9px;
+  border-radius: 6px;
+  background-color: #005baa;
+  cursor: pointer;
+  display: flex;
+  color: #ffffff;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-secondary-button {
+  background: none;
+  color: unset;
+  border: none;
+}
+
+.dynamic-form-multi-field {
+  padding-left: 10px;
+}
+
+.section-multi-button-add {
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.form-section-fields {
+  flex-direction: column;
+  gap: 10px;
+  display: flex;
+  padding-left: 20px;
+}
+
+.dynamic-form-fields-wrap {
+  flex-direction: column;
+  gap: 10px;
+  display: flex;
+}
