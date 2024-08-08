@@ -111,5 +111,6 @@ export type Form = {
     title?: string | undefined;
     description?: string;
     sections: FormSection[];
-    buttons?: Button[]
+    buttons?: Button[];
+    css?: string;
 }

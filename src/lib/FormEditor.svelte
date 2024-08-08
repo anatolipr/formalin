@@ -30,8 +30,8 @@
         updateButtons,
         updateFieldValue,
         copyDefinition,
-        updateSectionCondition
-
+        updateSectionCondition,
+        updateFormCss
     } from "../data/stores";
 
     import Options from "./Options.svelte";
@@ -348,6 +348,14 @@
                         <div class="form-title">Buttons</div>
                         <Options value={$form.buttons || []} on:input={e =>
                         updateButtons(e.detail)} />
+                    </div>
+                    <div
+                        style="flex-direction: column; gap: 7px; display: flex">
+                        <div>css</div>
+                        <textarea
+                            style="height: 140px; margin-bottom: 10px"
+                            :value="{$form.css || ''}"
+                            on:input="{(e) => updateFormCss(e.target.value)}"></textarea>
                     </div>
                 </div>
             </div>

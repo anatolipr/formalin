@@ -1,11 +1,12 @@
 /*use Muli font*/
 @import url("https://fonts.googleapis.com/css2?family=Muli:wght@300;400;700;800&display=swap");
 
-select,
-input, 
-textarea {
-  border-radius: 5px;
-}
+
+.dynamic-form-container select,
+.dynamic-form-container input, 
+.dynamic-form-container textarea {
+    border-radius: 5px;
+  }
 
 /**
  * Dynamic form styles

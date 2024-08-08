@@ -167,6 +167,10 @@
   {/if}
 </form>
 
+<svelte:element this={'style'}>
+  {$form.css}
+</svelte:element>
+
 <!-- class="form-secondary-button dynamic-form-multi-field" -->
 <!--
 <style>

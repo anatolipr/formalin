@@ -278,3 +278,10 @@ export function updateButtons(buttons: Button[]) {
         return $form
     })
 }
+
+export function updateFormCss(css: string) {
+    form.update($form => {
+        $form.css = css
+        return $form
+    })
+}
