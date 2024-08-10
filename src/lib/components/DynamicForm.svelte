@@ -92,7 +92,7 @@
           {#if $form.sections[sectionIndex].multi}
           <div style="display: flex">
               <div style="flex: 1">
-                  {inputIndex + '/' + sectionRepeats(sectionIndex)}
+                  {inputIndex + '/' + sectionRepeats(sectionIndex, $form.sections)}
               </div>
               <div
                   style="cursor: pointer"
