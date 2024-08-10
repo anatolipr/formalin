@@ -84,7 +84,7 @@ export function updateFormData(fieldName: string, value: string): void {
     })
 }
 
-export function meetsCondition(condition: Condition | undefined, fd: any, inputIndex: number | undefined): boolean {
+export function meetsCondition(condition: Condition | undefined, fd: any, inputIndex?: number | undefined): boolean {
     if (!condition || !condition.fieldName) {
         return true;
     }
