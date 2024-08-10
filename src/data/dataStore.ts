@@ -176,3 +176,42 @@ export function removeRepeat(sectionIndex: number, inputIndex: number) {
 
     
 }
+
+export function getFormDataAsNestedJson() {
+    const $form = form.get();
+    const $formData = formData.get();
+
+    const result: {[k: string]: any} = {};
+
+    $form.sections.forEach(section => {
+
+        if (!section.multi) {
+            section.fields.filter(field => !!field.fieldName).forEach(field => {
+                result[field.fieldName] = $formData[field.fieldName];
+            })
+        } else {
+
+            const sectionId = section.id;
+            const currentRepeats = sectionRepeats($form.sections.indexOf(section));
+
+            let currentValues = [];
+
+            for (let i = 1; i <= currentRepeats; i++) {
+                let fieldValues: {[k: string]: string} = {};
+
+                section.fields.filter(f => !!f.fieldName).forEach(field => {
+                    const fieldName = `${field.fieldName}${i}`;
+                    fieldValues[field.fieldName] = $formData[fieldName];
+                });
+                currentValues.push(fieldValues);
+            }
+
+            result[section.title] = currentValues;
+
+        }
+
+        
+    });
+
+    return result;
+}

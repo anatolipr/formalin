@@ -1,5 +1,5 @@
 import { form } from './data/stores';
-import { formData } from './data/dataStore';
+import { formData, getFormDataAsNestedJson,  } from './data/dataStore';
 import { copyToClipboard } from './data/util/clipboard';
 
 /**
@@ -24,6 +24,10 @@ export default function(): void {
 
       (window as any).formDataAsJson = function() {
         return JSON.stringify(formData.get())
+      };
+
+      (window as any).formDataAsNestedJson = function() {
+        return JSON.stringify(getFormDataAsNestedJson())
       };
 
       (window as any).copyToClipboard = copyToClipboard

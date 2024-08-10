@@ -354,7 +354,7 @@
                         <div>css</div>
                         <textarea
                             style="height: 140px; margin-bottom: 10px"
-                            :value="{$form.css || ''}"
+                            value="{$form.css || ''}"
                             on:input="{(e) => updateFormCss(e.target.value)}"></textarea>
                     </div>
                 </div>

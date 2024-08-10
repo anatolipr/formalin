@@ -1,5 +1,6 @@
 import './app.css'
 import './dynamic.css'
+import './data/darkModeSupport';
 import App from './App.svelte'
 
 import formInit from './formInit';
