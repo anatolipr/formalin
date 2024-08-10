@@ -102,7 +102,7 @@ export function meetsCondition(condition: Condition | undefined, fd: any, inputI
     return fieldValue == requiredValue;
 }
 
-export function sectionRepeats(sectionIndex: number, sections?: FormSection[]): number {
+export function sectionRepeats(sectionIndex: number): number {
 
     const $form = form.get();
 

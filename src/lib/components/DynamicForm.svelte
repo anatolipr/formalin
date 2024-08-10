@@ -92,7 +92,9 @@
           {#if $form.sections[sectionIndex].multi}
           <div style="display: flex">
               <div style="flex: 1">
-                  {inputIndex + '/' + sectionRepeats(sectionIndex, $form.sections)}
+                {#key $formData[`_sr_${$form.sections[sectionIndex].id}`]}
+                {inputIndex + '/' + sectionRepeats(sectionIndex)}
+                {/key}
               </div>
               <div
                   style="cursor: pointer"
