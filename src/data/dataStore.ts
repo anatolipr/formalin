@@ -52,6 +52,35 @@ if (hasParentIntegration()) {
 
 } else {
     form.subscribe(resetFormData);
+
+    const search = new URLSearchParams(window.location.search);
+
+    if (search.get('schema')) {
+        fetch(search.get('schema')!)
+            .then(response => response.json())
+            .then(data => {
+                form.set(data);
+
+                if (search.get('data')) {
+                    fetch(search.get('data')!)
+                        .then(response => response.json())
+                        .then(data => {
+                            formData.set(data);
+                        })
+                        .catch(e => {
+                            console.error('Error fetching data', e);
+                        })
+                } else {
+                    resetFormData();
+                }
+                
+            })
+            .catch(e => {
+                console.error('Error fetching schema', e);
+            })
+    }
+
+
 }
 
 export function resetFormData(): void {
