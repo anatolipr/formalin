@@ -23,14 +23,23 @@
 
             const fields = [];
 
-            JSON.parse(data).sections.forEach(section => 
-            
-              section.fields.map(f => f.fieldName).filter(f => !!f)
-              .forEach(field => {
-                fields.push(`${formId}.${field}`)
+            JSON.parse(data).sections.forEach(section => {
+
+              if (section.condition && section.condition.fieldName && fields.indexOf(section.condition.fieldName) === -1) {
+                fields.push(`${section.condition.fieldName}`)
+              }
+
+              section.fields.forEach(field => {
+                if (field.condition && field.condition.fieldName && fields.indexOf(field.condition.fieldName) === -1) {
+                  fields.push(`${field.condition.fieldName}`)
+                }
+
+                if (field.fieldName && fields.indexOf(field.fieldName) === -1) {
+                  fields.push(`${formId}.${field.fieldName}`)
+                }
               })
 
-            );
+            });
 
             console.log('fields from metadata', fields)
             

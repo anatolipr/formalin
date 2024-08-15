@@ -39,7 +39,11 @@ function postToFrames(data) {
                                 "fieldName": "city",
                                 "required": false,
                                 "value": "Notown",
-                                "validation": "[a-zA-Z]*"
+                                "validation": "[a-zA-Z]*",
+                                "condition": {
+                                        "fieldName": "foo",
+                                        "requiredValue": "bar"
+                                    }
                                 },
                                 {
                                 "label": "Street Address",
@@ -64,8 +68,9 @@ function postToFrames(data) {
                         ]
                         })
                     
-                } else if (atob(e.data.url) === '/secure/checklist/eventValues.json?id={instanceEid}&keys=formData1.city,formData1.address') {
-                    text = '{"formData1.address":"yyy"}';
+                } else if (atob(e.data.url) === '/secure/checklist/eventValues.json?id={instanceEid}&keys=foo,formData1.city,formData1.address') {
+                    text = '{"formData1.address":"yyy", "foo": "bar"}';
+                    console.log('text', text)
                 }
 
 
