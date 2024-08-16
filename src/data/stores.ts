@@ -172,18 +172,19 @@ export function updateFieldLabel(sectionIndex: number, fieldIndex: number, label
     })
 }
 
-export function conditionAsOption(sectionIndex: number, fieldIndex?: number): Option<string> {
+export function conditionAsOption(sectionIndex: number, fieldIndex?: number, refresher?: any): Option<string> {
     const $form = form.get()
 
     if (fieldIndex === undefined) {
         return {
-            label: $form.sections[sectionIndex].condition?.fieldName || "",
-            value: $form.sections[sectionIndex].condition?.requiredValue || ""
+            value: $form.sections[sectionIndex].condition?.fieldName || "",
+            label: $form.sections[sectionIndex].condition?.requiredValue || ""
         } as Option<string>;
     } else {
+        
         return {
-            label: $form.sections[sectionIndex].fields[fieldIndex].condition?.fieldName || "",
-            value: $form.sections[sectionIndex].fields[fieldIndex].condition?.requiredValue || ""
+            value: $form.sections[sectionIndex].fields[fieldIndex].condition?.fieldName || "",
+            label: $form.sections[sectionIndex].fields[fieldIndex].condition?.requiredValue || ""
         } as Option<string>;
     }
     

@@ -156,7 +156,7 @@
                         </div>
                         <div class="fieldline">
                             <div class="form-title">Condition</div>
-                            <OptionInput value={conditionAsOption(sectionIndex)}
+                            <OptionInput value={conditionAsOption(sectionIndex, undefined,  $form.sections[sectionIndex].condition)}
                             on:input={e => updateSectionCondition(sectionIndex,
                             e.detail)} valuePlaceholder="field name"
                             labelPlaceholder="expected value" />
@@ -312,7 +312,7 @@
                                         <div class="form-title">Condition</div>
                                         <OptionInput
                                         value={conditionAsOption(sectionIndex,
-                                        fieldIndex)} on:input={e =>
+                                        fieldIndex, $form.sections[sectionIndex].fields[fieldIndex].condition )} on:input={e =>
                                         updateFieldCondition(sectionIndex,
                                         fieldIndex, e.detail)}
                                         valuePlaceholder="field name"
