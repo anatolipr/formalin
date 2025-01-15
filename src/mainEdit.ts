@@ -19,7 +19,7 @@ function params(dataParams: string): object | string | undefined {
     if (!dataParams) {
         return dataParams;
     }
-    const stringValue: string = atob(dataParams);
+    const stringValue: string = dataParams;
     if (stringValue.startsWith('{') && stringValue.endsWith('}')) {
         return JSON.parse(stringValue);
     } else if (stringValue !== 'undefined') {

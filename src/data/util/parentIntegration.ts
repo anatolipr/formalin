@@ -57,7 +57,7 @@ export function callParent(functionName: string, params?: object | undefined): P
                 && event.data.func === functionName + "Response"
                 && event.data.channel == parentIntegrationDetails.channel) {
                     
-                    //TODO: use atob and JSON.parse to get the value
+                    
                     resolveFn(event.data.params);
             }
         } catch (error) {
@@ -72,7 +72,7 @@ export function callParent(functionName: string, params?: object | undefined): P
     const message = {
         type: 'func',
         func: functionName,
-        params: btoa(JSON.stringify(params)),
+        params: JSON.stringify(params),
         channel: parentIntegrationDetails.channel
     }
 
