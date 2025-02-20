@@ -90,7 +90,8 @@ export type FormSection = {
     description: string;
     condition?: Condition;
     fields: FormField[];
-    multi: boolean
+    multi: boolean;
+    key: string;
 }
 
 export type Button = {

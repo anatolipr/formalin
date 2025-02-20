@@ -235,7 +235,7 @@ export function getFormDataAsNestedJson() {
                 currentValues.push(fieldValues);
             }
 
-            result[section.title] = currentValues;
+            result[section.key || section.title] = currentValues;
 
         }
 

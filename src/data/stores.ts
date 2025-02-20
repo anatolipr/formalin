@@ -50,6 +50,7 @@ function newSection(): FormSection {
         description: '', 
         title: 'New section',
         multi: false,
+        key: '',
         fields: [
             newField()
         ]
@@ -147,6 +148,13 @@ export function updateSectionTitle(sectionIndex: number, title: string) {
 export function updateSectionDescription(sectionIndex: number, description: string) {
     form.update($form => {
         $form.sections[sectionIndex].description = description
+        return $form
+    })
+}
+
+export function updateSectionKey(sectionIndex: number, key: string) {
+    form.update($form => {
+        $form.sections[sectionIndex].key = key
         return $form
     })
 }

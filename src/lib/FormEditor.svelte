@@ -10,6 +10,7 @@
         removeSection,
         updateSectionTitle,
         updateSectionDescription,
+        updateSectionKey,
         updateFieldLabel,
         updateFieldDescription,
         updateFieldName,
@@ -63,7 +64,9 @@
             form schema editor
         </div>
         {#if hasParent}
-        <div class="formalin-close" on:click="{() => close()}">close</div>
+        <div class="formalin-close" on:click="{() => close()}">
+            done editing
+        </div>
         {/if}
     </div>
     <div style="gap: 5px; margin: auto; display: flex">
@@ -156,16 +159,25 @@
                         </div>
                         <div class="fieldline">
                             <div class="form-title">Condition</div>
-                            <OptionInput value={conditionAsOption(sectionIndex, undefined,  $form.sections[sectionIndex].condition)}
+
+                            <OptionInput value={conditionAsOption(sectionIndex,
+                            undefined, $form.sections[sectionIndex].condition)}
                             on:input={e => updateSectionCondition(sectionIndex,
                             e.detail)} valuePlaceholder="field name"
                             labelPlaceholder="expected value" />
-
                             <div class="form-title dynamic-form-description">
                                 '!' before value negates the condition. Eg.
                                 '!seven' will be true for any value but 'seven'.
                                 Tip only '!' results in &lt;not empty&gt;
                             </div>
+                        </div>
+                        <div class="fieldline">
+                            <div class="form-title">Section Key</div>
+                            <input
+                                class="input-item"
+                                type="text"
+                                value="{$form.sections[sectionIndex].key || ''}"
+                                on:input="{(e) => updateSectionKey(sectionIndex, e.target.value)}" />
                         </div>
                         <div class="fieldline">
                             <div class="form-title">multi-section</div>
@@ -286,7 +298,20 @@
                                     {/if} {#if
                                     supportsOptions($form.sections[sectionIndex].fields[fieldIndex].type)}
                                     <div class="fieldline">
-                                        <div class="form-title">Options</div>
+                                        <div>
+                                            <div
+                                                class="form-title"
+                                                title="opt + delete = remove">
+                                                Options
+                                            </div>
+                                            <div
+                                                class="form-sub"
+                                                title="opt + delete = remove">
+                                                Use
+                                                <kbd>Option + Delete</kbd> to
+                                                remove an option
+                                            </div>
+                                        </div>
                                         <Options
                                         value={$form.sections[sectionIndex].fields[fieldIndex].options
                                         || []} on:input={e =>
@@ -312,7 +337,9 @@
                                         <div class="form-title">Condition</div>
                                         <OptionInput
                                         value={conditionAsOption(sectionIndex,
-                                        fieldIndex, $form.sections[sectionIndex].fields[fieldIndex].condition )} on:input={e =>
+                                        fieldIndex,
+                                        $form.sections[sectionIndex].fields[fieldIndex].condition
+                                        )} on:input={e =>
                                         updateFieldCondition(sectionIndex,
                                         fieldIndex, e.detail)}
                                         valuePlaceholder="field name"
@@ -345,7 +372,17 @@
                     </div>
                     {/each}
                     <div style="padding-bottom: 20px" class="fieldline">
-                        <div class="form-title">Buttons</div>
+                        <div>
+                            <div
+                                class="form-title"
+                                title="opt + delete = remove">
+                                Buttons (optional)
+                            </div>
+                            <div class="form-sub" title="opt + delete = remove">
+                                Use <kbd>Option + Delete</kbd> to remove an
+                                option
+                            </div>
+                        </div>
                         <Options value={$form.buttons || []} on:input={e =>
                         updateButtons(e.detail)} />
                     </div>
@@ -425,6 +462,10 @@
       font-size: 13px;
       margin: auto;
       cursor: pointer
+    }
+
+    .form-sub {
+      font-size: 10px;
     }
 
     * {box-sizing: border-box}

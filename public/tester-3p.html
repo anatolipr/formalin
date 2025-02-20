@@ -1,0 +1,320 @@
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <script
+            type="module"
+            crossorigin
+            src="https://formalin.netlify.app/mainEdit.js"></script>
+        <link
+            rel="stylesheet"
+            crossorigin
+            href="https://formalin.netlify.app/assets/mainEdit.css" />
+
+        <script type="importmap">
+            {
+                   "imports": {
+                       "vue": "https://js-cdn.impact.com/npm/vue@3.4.0/dist/vue.esm-browser.js"
+                   }
+                }
+        </script>
+
+        <style>
+                    @import url("https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700&display=swap");
+
+            .textareas {
+              width: calc(100)
+            }
+
+            .arrow-up {
+              content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='m12 10.8l-3.9 3.9q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7l4.6-4.6q.3-.3.7-.3t.7.3l4.6 4.6q.275.275.275.7t-.275.7t-.7.275t-.7-.275z'/%3E%3C/svg%3E")
+            }
+
+            .arrow-button {
+              border: 1px solid gray;
+              border-radius: 20px;
+              width: 30px;
+              height: 30px;
+              font-size: 0;
+              cursor: pointer;
+            }
+
+            .arrow-down {
+              content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 14.975q-.2 0-.375-.062T11.3 14.7l-4.6-4.6q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l3.9 3.9l3.9-3.9q.275-.275.7-.275t.7.275t.275.7t-.275.7l-4.6 4.6q-.15.15-.325.213t-.375.062'/%3E%3C/svg%3E");
+            }
+
+            .section-padding {
+              padding: 9px;
+            }
+
+            .section-border {
+
+            }
+
+            .textareas-section {
+              flex-direction: column;
+              gap: 6px;
+              flex: 1;
+              display: flex;
+            }
+
+            .main-section {
+              flex-direction: column;
+              gap: 10px;
+              display: flex;
+            }
+
+            .section-title {
+              font-size: 22px
+            }
+
+            * {box-sizing: border-box}
+        </style>
+    </head>
+
+    <body>
+        <div
+            style="position: relative; width: 951px; gap: 30px; display: flex; flex-direction: column; margin: 0 auto; font-family: var(--typography-font-family-font-family, Mulish)">
+            <div
+                style="/* Header */font-family: var(--typography-font-family-font-family, Mulish); /* 137.5% */text-transform: capitalize; font-size: 26px; font-weight: 700; color: var(--color-text-text-default, #2D3E50); font-feature-settings: 'liga' off, 'clig' off">
+                Page Content
+            </div>
+            <div class="main-section">
+                <div
+                    style="display: flex"
+                    class="section-padding section-border">
+                    <div style="flex: 1" class="section-title">Advanced</div>
+                    <div
+                        style="display: flex; align-items: center; justify-content: center"
+                        class="arrow-up arrow-button"
+                        id="advancedMinimize">
+                        content
+                    </div>
+                </div>
+                <div
+                    style="overflow: hidden; transition: height 0.5s"
+                    id="advancedSection">
+                    <div
+                        style="gap: 20px; display: flex"
+                        class="section-padding">
+                        <div class="textareas-section">
+                            <div>Template HTML or Content URL</div>
+                            <textarea class="textareas" id="template">
+
+
+<div style="position: relative">
+    <div style="width: 972px; gap: 50px; display: flex">
+        <div style="flex: 1">
+            <img
+                style="color: #ff6600"
+                src="https://ui.impact.com/onboarding-ui/cross-sell/assets/creator-cross-sell/creator-logo.svg" />
+            <h1 style="color: #ff6600">{{heading}}</h1>
+            <h2 v-if="subheading">{{subheading}}</h2>
+            <p v-if="paragraph">{{paragraph}}</p>
+            <div
+                style="width: fit-content; padding-top: 4px; padding-right: 10px; padding-bottom: 4px; padding-left: 10px; font-size: 16px; border-radius: 25px; background-color: #000000; display: flex; color: #ffffff; align-items: center; justify-content: center">
+                {{buttonText || 'Activate'}}
+            </div>
+        </div>
+        <div
+            style="width: 458px; height: 298px"
+            v-html="video"
+            v-if="video"></div>
+        <img
+            style="width: 343px"
+            v-else=""
+            src="https://s3-alpha-sig.figma.com/img/0f9c/d1c6/e422f0ca9dd6756d518794e477c7a399?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=jdWYY23H7Dy05C~3VRYGaVS~JDRAj1-e9XKJvvpRrT45LgEilKUO~Pl1vZgi7rLZ4lbIAWbOMP1yQnr~xW~aqV1uba96jnTBUGhPfUmM9Jirn0Rio64~8BgCisuIpae9Huu0vAj-7ZQAGhLDbE9M6-YslNT3iyjeZChl69n7mkUeyogYLxekmKQXJ5qZ-2irpiOQI6OtyKyfFztG0zV8ZTOC0nZjR-8neVEwn~XqQLzBQhEqG4U24kIYZmCpjI-wj93PKQkAoXVz8-UVUFRB7QF4w1tZK5p8FPQF5FveL8XmjSfEhQTXhMVn0j5rBFT0WQbQC4oIGI1R9Le~2Palow__" />
+    </div>
+    <h2>Frequently Asked Questions</h2>
+    <div
+        style="width: 972px; gap: 10px; background-color: #e8e8e8; display: flex; flex-direction: column">
+        <details class="accordion" v-for="qna in this['Q&A']">
+            <summary>{{qna.question}}</summary>
+            <div class="accordion-body">{{qna.answer}}</div>
+        </details>
+    </div>
+</div>
+
+<style>
+
+    body {
+        font-family: sans-serif;
+    }
+
+    .accordion {
+      border-radius: 5px;
+      background-color: #fff;
+      border: 1px solid #CACFD3;
+
+      summary {
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        font-size: 16px;
+        font-weight: 700;
+        font-family: 'Mulish', sans-serif;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        &after {
+            content: url('data:image/svg+xml,<svg width="30" height="31" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 8.12695C0 3.70867 3.58172 0.126953 8 0.126953H22C26.4183 0.126953 30 3.70868 30 8.12695V22.127C30 26.5452 26.4183 30.127 22 30.127H8C3.58172 30.127 0 26.5452 0 22.127V8.12695Z" fill="white"/><path d="M7 15.127C7 14.7127 7.33579 14.377 7.75 14.377H22.25C22.6642 14.377 23 14.7127 23 15.127C23 15.5412 22.6642 15.877 22.25 15.877H7.75C7.33579 15.877 7 15.5412 7 15.127Z" fill="%232D3E50"/></svg>');
+        }
+
+      }
+
+      .accordion-body {
+        padding: 20px;
+        padding-top: 0;
+        font-size: 14px;
+        color: #2D3E50;
+      }
+
+    }
+</style>
+
+<style>
+
+    * {box-sizing: border-box}
+</style>
+</textarea
+                            >
+                            <div>Additional HTML</div>
+                            <textarea
+                                class="textareas"
+                                id="additionalHTML"
+                                placeholder="components JS, CSS, etc"></textarea>
+                        </div>
+                        <div class="textareas-section">
+                            <div>View model form schema</div>
+                            <textarea class="textareas" id="formSchema">
+
+{"id":"formData","sections":[{"id":"s0","description":"","title":"Intro Section","multi":false,"fields":[{"label":"Heading","description":"","type":"text","placeholder":"","fieldName":"heading","required":false,"value":"","validation":""},{"label":"Sub heading","description":"","type":"text","placeholder":"","fieldName":"subheading","required":false,"value":"","validation":""},{"label":"Paragraph","description":"","type":"textarea","placeholder":"","fieldName":"paragraph","required":false,"value":"","validation":""},{"label":"Video","description":"","type":"textarea","placeholder":"","fieldName":"video","required":false,"value":"","validation":""},{"label":"Button Text","description":"","type":"text","placeholder":"","fieldName":"buttonText","required":false,"value":"","validation":""}]},{"id":"s1","description":"","title":"Q&A","multi":true,"fields":[{"label":"Question","description":"","type":"text","placeholder":"","fieldName":"question","required":false,"value":"","validation":""},{"label":"Answer","description":"","type":"textarea","placeholder":"","fieldName":"answer","required":false,"value":"","validation":""}]}],"buttons":[]}</textarea
+                            >
+                            <button
+                                style="height: 18px; padding: 10px; background-color: #000000; display: flex; color: #ffffff; align-items: center; justify-content: center"
+                                type="button"
+                                id="openFormModelEditorButton">
+                                Open Form Editor
+                            </button>
+                        </div>
+                        <div class="textareas-section">
+                            <div>View model</div>
+                            <textarea
+                                class="textareas"
+                                id="viewModel"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="main-section">
+                <div class="section-padding section-border section-title">
+                    View Model Form
+                </div>
+                <div class="section-padding" id="viewModelForm"></div>
+            </div>
+            <div class="main-section">
+                <div class="section-title section-padding section-border">
+                    Preview
+                </div>
+                <div class="section-padding" id="preview">content</div>
+            </div>
+        </div>
+
+        <script type="module">
+            import { mount, form, formData, getFormDataAsNestedJson } from "./3party.js"
+
+            mount('#viewModelForm');
+
+
+            window['formalinGetFormSchemaJsonAsString'] = function() {
+                console.log("formalinGetFormSchemaJsonAsString -> formalinGetCurrentChannel() -> ", formalinGetCurrentChannel());
+                const data = document.getElementById('formSchema').value;
+                console.log('data', data)
+                return document.getElementById('formSchema').value;
+            };
+
+            window['formalinSetFormSchemaJsonAsString'] = function(data) {
+                console.log("formalinSetFormSchemaJsonAsString -> formalinGetCurrentChannel() -> ", formalinGetCurrentChannel());
+                document.getElementById('formSchema').value =
+                    (typeof data === 'string') ? data : JSON.stringify(data);
+
+                form.set(data);
+            };
+
+
+            form.set(JSON.parse(window['formalinGetFormSchemaJsonAsString']() || '{}'))
+
+            document.getElementById('openFormModelEditorButton').onclick = function() {
+                formalinOpen('test-3p');
+            };
+
+            import { createApp } from 'https://js-cdn.impact.com/npm/vue@3.4.0/dist/vue.esm-browser.js';
+
+            const templateEl = document.getElementById('template');
+            const viewModelEl = document.getElementById('viewModel');
+            const shadowRoot = document.querySelector("#preview").attachShadow({mode: 'open'});
+
+
+
+            function render() {
+
+                const app = createApp({
+                    template: templateEl.value,
+                    data: () => ({
+                        ... JSON.parse(viewModel.value || '{}')
+                    })
+                });
+
+                shadowRoot.innerHTML = '<div></div>';
+                const styleMatch = template.value.match(/<style>([\s\S]*?)<\/style>/);
+                  if (styleMatch) {
+                    const styleContent = styleMatch[1];
+
+                    // Inject new style into the document head
+                    const styleElement = document.createElement("style");
+                    styleElement.innerText = styleContent;
+                    shadowRoot.appendChild(styleElement);
+                  }
+
+
+                app.mount(shadowRoot.querySelector('div'));
+            }
+
+            templateEl.addEventListener('input', () => render());
+            viewModelEl.addEventListener('input', () => {
+                formData.set(JSON.parse(viewModelEl.value));
+            });
+
+            render();
+
+
+            formData.subscribe((nv) => {
+                viewModelEl.value = JSON.stringify(getFormDataAsNestedJson())
+                render();
+            });
+
+
+            const advancedSectionEl = document.getElementById("advancedSection");
+            const advancedMinimizeEl = document.getElementById("advancedMinimize");
+
+
+            function toggleAdvanced() {
+                if (advancedMinimizeEl.classList.contains('arrow-down')) {
+                    advancedSectionEl.style.height = '0px';
+                } else {
+                    advancedSectionEl.style.height = advancedSectionEl.children[0].getBoundingClientRect().height + 'px';
+                }
+            }
+
+            //init
+            advancedMinimizeEl.addEventListener('click', () => {
+                advancedMinimizeEl.classList.toggle('arrow-down');
+                toggleAdvanced();
+            });
+        </script>
+    </body>
+</html>

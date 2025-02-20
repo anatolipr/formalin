@@ -8,7 +8,7 @@ import { copyToClipboard } from './data/util/clipboard';
 export default function(): void {
 
     (window as any).___form = form;
-    (window as any).___formData = formData;
+    (window as any).___formData = (window as any).___formData || formData;
 
       (window as any).formFromJson = function(json: string | object) {
         form.set(typeof json === 'object' ? json : JSON.parse(json))

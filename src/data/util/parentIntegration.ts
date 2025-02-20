@@ -76,11 +76,14 @@ export function callParent(functionName: string, params?: object | undefined): P
         channel: parentIntegrationDetails.channel
     }
 
-    if (parentIntegrationDetails.iFrame) {
-        window.parent.postMessage(message, '*');
-    } else if (parentIntegrationDetails.opener) {
-        window.opener.postMessage(params, '*');
-    }
+    Promise.resolve().then(() => {
+        if (parentIntegrationDetails.iFrame) {
+            window.parent.postMessage(message, '*');
+        } else if (parentIntegrationDetails.opener) {
+            window.opener.postMessage(message, '*');
+        }
+    });
+
 
     return promise;
 }
