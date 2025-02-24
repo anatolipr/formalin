@@ -225,24 +225,35 @@
         </div>
 
         <script type="module">
+
             import { mount, form, formData, getFormDataAsNestedJson } from "./3party.js"
+            import { renderVueTemplateElement } from "./vue/vue-custom-component.mjs"
+
+            import { createApp } from 'https://js-cdn.impact.com/npm/vue@3.4.0/dist/vue.esm-browser.js';
+
+            const templateEl = document.getElementById('template');
+            const formSchemaEl = document.getElementById('formSchema');
+            const viewModelEl = document.getElementById('viewModel');
+            const previewEl = document.getElementById('preview');
+
+
 
             mount('#viewModelForm');
 
 
             window['formalinGetFormSchemaJsonAsString'] = function() {
                 console.log("formalinGetFormSchemaJsonAsString -> formalinGetCurrentChannel() -> ", formalinGetCurrentChannel());
-                const data = document.getElementById('formSchema').value;
-                console.log('data', data)
-                return document.getElementById('formSchema').value;
+                return formSchemaEl.value;
             };
 
             window['formalinSetFormSchemaJsonAsString'] = function(data) {
                 console.log("formalinSetFormSchemaJsonAsString -> formalinGetCurrentChannel() -> ", formalinGetCurrentChannel());
-                document.getElementById('formSchema').value =
+                formSchemaEl.value =
                     (typeof data === 'string') ? data : JSON.stringify(data);
 
-                form.set(data);
+                    const previousValues = formData.get();
+                    form.set(data);
+                    formData.set(previousValues);
             };
 
 
@@ -252,36 +263,13 @@
                 formalinOpen('test-3p');
             };
 
-            import { createApp } from 'https://js-cdn.impact.com/npm/vue@3.4.0/dist/vue.esm-browser.js';
-
-            const templateEl = document.getElementById('template');
-            const viewModelEl = document.getElementById('viewModel');
-            const shadowRoot = document.querySelector("#preview").attachShadow({mode: 'open'});
-
+           
 
 
             function render() {
-
-                const app = createApp({
-                    template: templateEl.value,
-                    data: () => ({
-                        ... JSON.parse(viewModel.value || '{}')
-                    })
-                });
-
-                shadowRoot.innerHTML = '<div></div>';
-                const styleMatch = template.value.match(/<style>([\s\S]*?)<\/style>/);
-                  if (styleMatch) {
-                    const styleContent = styleMatch[1];
-
-                    // Inject new style into the document head
-                    const styleElement = document.createElement("style");
-                    styleElement.innerText = styleContent;
-                    shadowRoot.appendChild(styleElement);
-                  }
-
-
-                app.mount(shadowRoot.querySelector('div'));
+                const template = templateEl.value;
+                const viewModel = viewModelEl.value;
+                renderVueTemplateElement(template, viewModel, previewEl);
             }
 
             templateEl.addEventListener('input', () => render());
@@ -315,6 +303,7 @@
                 advancedMinimizeEl.classList.toggle('arrow-down');
                 toggleAdvanced();
             });
+            toggleAdvanced();
         </script>
     </body>
 </html>
