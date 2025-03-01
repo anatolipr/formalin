@@ -7,8 +7,8 @@ import App from '../AppView.svelte'
 export { form } from '../data/stores';
 export { formData, getFormDataAsNestedJson,  } from '../data/dataStore';
 
-export function mount(target: string) {
+export function mount(target: string | HTMLElement) {
   new App({
-    target: document.querySelector(target)!,
+    target: typeof target === 'string' ? document.querySelector(target)! : target,
   }) as any;
 }

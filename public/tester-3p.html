@@ -226,20 +226,20 @@
 
         <script type="module">
 
-            import { mount, form, formData, getFormDataAsNestedJson } from "./3party.js"
-            import { renderVueTemplateElement } from "./vue/vue-custom-component.mjs"
+            import { mount, form, formData, getFormDataAsNestedJson } from "https://formalin.netlify.app/3party.js"; // "./3party.js";
+            import { renderVueTemplateElement } from "http://app-content.impact.com/components/content-display/vue-content-element.mjs"
 
-            import { createApp } from 'https://js-cdn.impact.com/npm/vue@3.4.0/dist/vue.esm-browser.js';
 
-            const templateEl = document.getElementById('template');
-            const formSchemaEl = document.getElementById('formSchema');
-            const viewModelEl = document.getElementById('viewModel');
-            const previewEl = document.getElementById('preview');
 
 
 
             mount('#viewModelForm');
 
+
+            const templateEl = document.getElementById('template');
+            const formSchemaEl = document.getElementById('formSchema');
+            const viewModelEl = document.getElementById('viewModel');
+            const previewEl = document.getElementById('preview');
 
             window['formalinGetFormSchemaJsonAsString'] = function() {
                 console.log("formalinGetFormSchemaJsonAsString -> formalinGetCurrentChannel() -> ", formalinGetCurrentChannel());
@@ -268,7 +268,7 @@
 
             function render() {
                 const template = templateEl.value;
-                const viewModel = viewModelEl.value;
+                const viewModel = viewModelEl.value || {};
                 renderVueTemplateElement(template, viewModel, previewEl);
             }
 
@@ -303,6 +303,7 @@
                 advancedMinimizeEl.classList.toggle('arrow-down');
                 toggleAdvanced();
             });
+
             toggleAdvanced();
         </script>
     </body>
