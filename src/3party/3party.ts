@@ -5,7 +5,7 @@ import App from '../AppView.svelte'
 
 
 export { form } from '../data/stores';
-export { formData, getFormDataAsNestedJson,  } from '../data/dataStore';
+export { formData, getFormDataAsNestedJson,  convertNestedJsonToFormDataJson } from '../data/dataStore';
 
 export function mount(target: string | HTMLElement) {
   new App({

@@ -244,3 +244,22 @@ export function getFormDataAsNestedJson() {
 
     return result;
 }
+
+export function convertNestedJsonToFormDataJson(json: object): {[k: string]: string} {
+
+    const result: any = {};
+
+    Object.entries(json).forEach(([key, value]) => {
+         if (Array.isArray(value)) {
+              value.forEach((v, i) => {
+                Object.entries(v).forEach(([k, v]) => {
+                    result[`${k}${i + 1}`] = v;
+                });
+            })
+         } else {
+            result[key] = value;
+         }
+    });
+
+    return result;
+}
