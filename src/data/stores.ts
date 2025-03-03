@@ -2,15 +2,26 @@ import Foo from 'avos/src/foo-store/foo.js'
 import type {  Button, Form, FormField, FormSection, Option, Type } from './type/formConfigTypes'
 import { insertAtPosition, moveElementDown, moveElementUp } from './util/arrayUtil'
 import { copyToClipboard } from './util/clipboard'
+import { getParentIntegrationDetails, type ParentIntegrationDetails } from './util/parentIntegration'
 
 export const form: Foo<Form> = new Foo<Form>({
     id:"formData",
     sections: <FormSection[]>[],
-    buttons: <Button[]>[
-        {type: 'submit', label: 'Submit', enabled: true, value: 'submit'}
-    ]
+    buttons: defaultButtons()
 }, 'form')
 
+function defaultButtons(): Button[] {
+    const parentIntegrationDetails: ParentIntegrationDetails = getParentIntegrationDetails();
+
+    if (parentIntegrationDetails?.channel?.indexOf('nobuttons') > -1) {
+        return [];
+    } else {
+        return [
+            {type: 'submit', label: 'Submit', enabled: true, value: 'submit'}
+        ]
+    }
+    
+}
 
 function newField(): FormField {
     return {

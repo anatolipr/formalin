@@ -1,12 +1,12 @@
 import { get } from "svelte/store";
 
-type ParentIntegrationDetails = {
+export type ParentIntegrationDetails = {
     channel: string;
     iFrame: boolean;
     opener: boolean;
 }
 
-function getParentIntegrationDetails(): ParentIntegrationDetails {
+export function getParentIntegrationDetails(): ParentIntegrationDetails {
     return {
         channel: getParentIntegrationParam(),
         iFrame: isInsideFrame(),
