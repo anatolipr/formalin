@@ -135,7 +135,8 @@ export function sectionRepeats(sectionIndex: number): number {
 
     const $form = form.get();
 
-    const sectionId = $form.sections[sectionIndex].id;
+    const section = $form.sections[sectionIndex];
+    const sectionId = section.key || section.title;
 
     return parseInt(formData.get()[`_sr_${sectionId}`]) || 1;
 }
@@ -143,7 +144,9 @@ export function sectionRepeats(sectionIndex: number): number {
 export function addRepeat(sectionIndex: number): void {
     const $form = form.get();
 
-    const sectionId = $form.sections[sectionIndex].id;
+    const section = $form.sections[sectionIndex];
+    const sectionId = section.key || section.title;
+    
     const currentRepeats = sectionRepeats(sectionIndex);
 
     const repeats = currentRepeats + 1;
@@ -167,7 +170,10 @@ export function removeRepeat(sectionIndex: number, inputIndex: number) {
     const $form = form.get();
     const fields: FormField[] = $form.sections[sectionIndex].fields;
 
-    const sectionId = $form.sections[sectionIndex].id;
+    
+    const section = $form.sections[sectionIndex];
+    const sectionId = section.key || section.title;
+
     const currentRepeats = sectionRepeats(sectionIndex);
 
     if (currentRepeats < 1) {
@@ -220,7 +226,6 @@ export function getFormDataAsNestedJson() {
             })
         } else {
 
-            const sectionId = section.id;
             const currentRepeats = sectionRepeats($form.sections.indexOf(section));
 
             let currentValues = [];
