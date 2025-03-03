@@ -255,7 +255,10 @@ export function convertNestedJsonToFormDataJson(json: object): {[k: string]: str
                 Object.entries(v).forEach(([k, v]) => {
                     result[`${k}${i + 1}`] = v;
                 });
-            })
+              });
+
+              result[`_sr_${key}`] = value.length + '';
+
          } else {
             result[key] = value;
          }

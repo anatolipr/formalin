@@ -226,7 +226,7 @@
 
         <script type="module">
 
-            import { mount, form, formData, getFormDataAsNestedJson } from "https://formalin.netlify.app/3party.js"; // "./3party.js";
+            import { mount, form, formData, getFormDataAsNestedJson, convertNestedJsonToFormDataJson } from "https://formalin.netlify.app/3party.js"; // "./3party.js";
             import { renderVueTemplateElement } from "http://app-content.impact.com/components/content-display/vue-content-element.mjs"
 
 
@@ -283,6 +283,10 @@
             formData.subscribe((nv) => {
                 viewModelEl.value = JSON.stringify(getFormDataAsNestedJson())
                 render();
+            });
+
+            formSchemaEl.addEventListener('input', () => {
+                form.set(convertNestedJsonToFormDataJson(JSON.parse(formSchemaEl.value)));
             });
 
 
