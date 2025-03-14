@@ -1,5 +1,5 @@
 import { form } from './data/stores';
-import { formData, getFormDataAsNestedJson,  } from './data/dataStore';
+import { convertNestedJsonToFormDataJson, formData, getFormDataAsNestedJson,  } from './data/dataStore';
 import { copyToClipboard } from './data/util/clipboard';
 
 /**
@@ -16,6 +16,11 @@ export default function(): void {
 
       (window as any).formDataFromJson = function(json: string | object) {
         formData.set(typeof json === 'object' ? json : JSON.parse(json))
+      };
+
+      (window as any).formDataFromNestedJson = function(json: string | object) {
+        const value = typeof json === 'object' ? json : JSON.parse(json);
+        formData.set(convertNestedJsonToFormDataJson(value));
       };
 
       (window as any).formAsJson = function() {
