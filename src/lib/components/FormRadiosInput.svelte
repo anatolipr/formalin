@@ -21,7 +21,9 @@
             type="radio"
             on:input="{input}"
             name="{fieldDef.fieldName}"
-            required="{fieldDef.required ? true : undefined}" />
+            required="{fieldDef.required ? true : undefined}"
+            bind:group="{value}" 
+            />
         <div>{option.label}</div></label
     >
     {/each} {/if}

@@ -51,18 +51,34 @@
               
               console.log('dataFromRules', parsed);
 
-              
+              const backup = localStorage.getItem('formalin-backup-' + formId);
 
               const dataForUi = {}
               Object.keys(parsed).forEach(key => {
+                if (!key.startsWith(`${formId}.`) || 
+                  (backup && (parsed[key] === null || parsed[key] === undefined))) {
+                  return;
+                }
                 // remove formData prefix
                 const keyWithoutPrefix = key.replace(`${formId}.`, '')
                 dataForUi[keyWithoutPrefix] = parsed[key] || ''
               })
 
+              if (Object.keys(dataForUi).length === 0) {
+                
+                if (backup) {
+                  const parsedBackup = JSON.parse(backup);
+
+                    Object.keys(parsedBackup.formData).forEach(key => {
+                      dataForUi[key] = parsedBackup.formData[key]
+                    });
+                  
+                }
+              }
+
               console.log('dataForUi', dataForUi )
-              
-              ___formData.set(dataForUi)
+
+              ___formData.set({...dataForUi});
             })
 
           
@@ -91,20 +107,28 @@
               b: formDataForBackend
             }, '*')
 
-            window.submitted = false;
+            
+            let errorResponse = false;
 
             window.addEventListener('message', (e) => {
-              if (e.data.method === 'bulkRuleUpdateResponse') {
-                window.parent.postMessage('MARK_AS_COMPLETE_AND_GO_TO_NEXT_CHECK', '*');
-                window.submitted = true;
+              if (e.data.method === 'bulkRuleUpdateResponse' && !errorResponse) {
+                if (e.data.text !== 'ok') {
+                  errorResponse = true;
+                  alert('There was an error saving the data. It looks like you need to refresh the page and try again.');
+                  const backup = JSON.stringify({
+                    formData: b
+                  });
+                  localStorage.setItem('formalin-backup-' + formId, backup);
+                } else {
+                  localStorage.removeItem('formalin-backup-' + formId);
+                  errorResponse = false;
+
+                  window.parent.postMessage('MARK_AS_COMPLETE_AND_GO_TO_NEXT_CHECK', '*');
+                  
+                }
               }
-            })
-          
-            setTimeout(() => {
-              if (! window.submitted) {
-                window.parent.postMessage('MARK_AS_COMPLETE_AND_GO_TO_NEXT_CHECK', '*');
-              }
-            }, 2000)
+            });
+            
             
           }
 

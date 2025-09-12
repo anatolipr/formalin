@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite -c vite.configMain.js -c  vite.config3party.js  --port=4000",
+    "vite:dev": "vite -c vite.configMain.js -c  vite.config3party.js  --port=4000",
     "build": "rm -rf dist && vite build -c vite.configMain.js && vite build -c vite.configMain2.js && vite build -c vite.configEdit.js && vite build -c vite.config3party.js",
     "preview": "vite preview",
+    "dev": "npm run build && cd dist && http-server --cors -p 7877",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
