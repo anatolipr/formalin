@@ -13,6 +13,37 @@
 
     <script type="module">
 
+      function showErrorMessage() {
+        
+        const old = document.getElementById("error-banner");
+        if (old) old.remove();
+
+        const banner = document.createElement("div");
+        banner.id = "error-banner";
+        banner.textContent = `Oops! We had trouble saving your answers. Please refresh the page and try again. Don't worry, your answers won't be lost.`;
+
+        Object.assign(banner.style, {
+          position: "fixed",
+          top: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          backgroundColor: "#d9534f",
+          color: "white",
+          padding: "12px 20px",
+          borderRadius: "8px",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+          fontFamily: "sans-serif",
+          fontSize: "14px",
+          zIndex: "9999",
+          maxWidth: "90%",
+          textAlign: "center"
+        });
+
+        document.body.appendChild(banner);
+
+        setTimeout(() => banner.remove(), 5000);
+      }
+
       import { doParentFetch } from 'https://ui.impact.com/onboarding-ui/misc/fetch-utils.js'  
 
       doParentFetch(`/secure/nositemesh/checklist/getCheckboxMeta.json?checkBoxId={currentCheckId}`)
@@ -114,7 +145,7 @@
               if (e.data.method === 'bulkRuleUpdateResponse' && !errorResponse) {
                 if (e.data.text !== 'ok') {
                   errorResponse = true;
-                  alert('There was an error saving the data. It looks like you need to refresh the page and try again.');
+                  showErrorMessage();
                   const backup = JSON.stringify({
                     formData: b
                   });
