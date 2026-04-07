@@ -5,13 +5,26 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FL</title>
+
+    <link href="https://ui.impact.com/theme-tokens/1.11.4/themes.css" crossorigin="anonymous" rel="stylesheet">
+    <link href="https://ui.impact.com/theme-tokens/1.11.4/index.css" crossorigin="anonymous" rel="stylesheet">
+    <link href="https://ui.impact.com/theme-tokens/1.11.4/fonts.css" crossorigin="anonymous" rel="stylesheet">
   </head>
-  <body>
+  <body class="vnext-light">
     <div id="app"></div>
 
     <script type="module" src="/src/main2.ts"></script>
 
     <script type="module">
+
+      import "https://ui.impact.com/theme-switcher/0.1.2/dist/global-definitions/index.mjs";
+      import { initializeThemeSwitcherIframe, setTheme, getTheme } from "https://ui.impact.com/theme-switcher/0.1.2/dist/index.mjs";
+      try {
+        initializeThemeSwitcherIframe();
+      } catch (e) {
+        console.warn('Theme switcher initialization failed', e);
+      }
+
 
       function showErrorMessage() {
         
@@ -181,6 +194,36 @@
         color: white;
         margin: 20px;
       }
+
+      body {
+        background-color: var(--iui3-color-background-background-default);
+        color: var(--iui3-color-text-text-default, #000);
+        font-family: var(--iui3-typography-font-family-font-family, Sarabun);
+      }
+
+      .form-button {
+          border: 1px solid transparent;
+          border-radius: var(--iui3-space-radius-button-radius, 9999px);
+          background: var(--iui3-color-primary-button-primary-background-default);
+          color: var(--iui3-color-primary-button-text-on-primary-default);
+          min-width: 65px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0 var(--iui3-space-padding-button-padding-leftright-default, 16px);
+          white-space: nowrap;
+          height: var(--iui3-space-height-button-height-default, 38px);
+          font-size: var(--iui3-typography-font-size-secondary-field-label, 14px);
+          font-weight: 600;
+          user-select: none;
+          cursor: pointer;
+          width: fit-content;  
+        }
+
+        .form-button:hover {
+          background: var(--iui3-color-primary-button-primary-background-hover);
+          box-shadow: var(--iui3-button-shadow);
+        }
     </style>
   </body>
 </html>
