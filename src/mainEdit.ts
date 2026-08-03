@@ -1,6 +1,7 @@
 import AppEdit from './AppEdit.svelte'
 
 import { postToFrames } from './data/util/iframeUtil';
+import './mcpbridge';
 
 document.body.insertAdjacentHTML('beforeend', `<div id="formeditor"></div>`);
 

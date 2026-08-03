@@ -4,6 +4,7 @@ import './data/darkModeSupport';
 import App from './App.svelte'
 
 import formInit from './formInit';
+import './mcpbridge';
 
 const app = new App({
   target: document.getElementById('app')!,

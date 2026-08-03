@@ -3,6 +3,7 @@ import './dynamic.css'
 import './data/darkModeSupport';
 import App from './AppView.svelte'
 import formInit from './formInit';
+import './mcpbridge';
 
 const app = new App({
   target: document.getElementById('app')!,
