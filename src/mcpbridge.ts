@@ -21,19 +21,7 @@ import {
 	getFormDataAsNestedJson,
 	convertNestedJsonToFormDataJson,
 } from './data/dataStore';
-import {
-	supportsOptions,
-	supportsPlaceholder,
-	supportsPattern,
-	supportsValue,
-	TypeOptions,
-	type Form,
-	type FormField,
-	type FormSection,
-	type Type,
-} from './data/type/formConfigTypes';
-
-const VALID_TYPES: Type[] = TypeOptions.map((o) => o.value);
+import { validateAndFillForm } from './data/type/formSchema';
 
 const MOCK_WORKFLOW_NOTE =
 	'Context: formalin is a form BUILDER - it renders/edits a JSON form SCHEMA (sections/fields/ ' +
@@ -165,96 +153,6 @@ function readFormData(): string {
 
 function readFormDataNested(): string {
 	return JSON.stringify(getFormDataAsNestedJson());
-}
-
-function validateFieldForType(field: Partial<FormField>, path: string, warnings: string[]): FormField {
-	const type = field.type;
-	if (type === undefined || !VALID_TYPES.includes(type)) {
-		throw new Error(`${path}: "type" must be one of ${JSON.stringify(VALID_TYPES)}, got ${JSON.stringify(type)}`);
-	}
-	if (!supportsOptions(type) && field.options && field.options.length > 0) {
-		warnings.push(`${path}: type "${type}" ignores "options" (only radios/checkboxes/dropdown use it)`);
-	}
-	if (supportsOptions(type) && (!field.options || field.options.length === 0)) {
-		warnings.push(`${path}: type "${type}" normally needs a non-empty "options" array`);
-	}
-	if (!supportsPlaceholder(type) && field.placeholder) {
-		warnings.push(`${path}: type "${type}" ignores "placeholder"`);
-	}
-	if (!supportsPattern(type) && field.validation) {
-		warnings.push(`${path}: type "${type}" ignores "validation" (pattern) - only text/number/date use it`);
-	}
-	if (!supportsValue(type) && field.value) {
-		warnings.push(`${path}: type "title" ignores "value"`);
-	}
-	return {
-		label: field.label ?? '',
-		description: field.description ?? '',
-		fieldName: field.fieldName ?? '',
-		placeholder: field.placeholder ?? '',
-		required: !!field.required,
-		validation: field.validation ?? '',
-		type,
-		condition: field.condition,
-		options: field.options,
-		value: field.value ?? '',
-	};
-}
-
-function validateAndFillSection(section: Partial<FormSection>, index: number, warnings: string[]): FormSection {
-	const path = `sections[${index}]`;
-	if (!Array.isArray(section.fields)) {
-		throw new Error(`${path}.fields must be an array`);
-	}
-	const fields = section.fields.map((f, i) => validateFieldForType(f, `${path}.fields[${i}]`, warnings));
-
-	const fieldNames = fields.map((f) => f.fieldName).filter(Boolean);
-	const dupes = fieldNames.filter((n, i) => fieldNames.indexOf(n) !== i);
-	if (dupes.length > 0) {
-		warnings.push(`${path}: duplicate fieldName(s) ${JSON.stringify([...new Set(dupes)])} - only the last value for each will round-trip through form data`);
-	}
-
-	return {
-		id: section.id ?? `s${index}`,
-		title: section.title ?? '',
-		description: section.description ?? '',
-		condition: section.condition,
-		multi: !!section.multi,
-		key: section.key ?? '',
-		fields,
-	};
-}
-
-function validateAndFillForm(parsed: Partial<Form>, warnings: string[]): Form {
-	if (!parsed || !Array.isArray(parsed.sections)) {
-		throw new Error('formSchemaJson must be shaped like {"sections": [...], ...} - the COMPLETE new form, not a delta. See __mcpSummary for the exact shape.');
-	}
-	const sections = parsed.sections.map((s, i) => validateAndFillSection(s, i, warnings));
-
-	const groupKeys = sections.filter((s) => s.multi).map((s) => s.key || s.title);
-	const dupeGroups = groupKeys.filter((k, i) => groupKeys.indexOf(k) !== i);
-	if (dupeGroups.length > 0) {
-		warnings.push(`duplicate repeat-group key/title ${JSON.stringify([...new Set(dupeGroups)])} across multi sections - their form data would collide`);
-	}
-
-	const allFieldNames = sections.flatMap((s) => s.fields.map((f) => f.fieldName)).filter(Boolean);
-	for (const s of sections) {
-		const conds = [s.condition, ...s.fields.map((f) => f.condition)].filter(Boolean) as { fieldName: string }[];
-		for (const c of conds) {
-			if (!allFieldNames.includes(c.fieldName)) {
-				warnings.push(`condition references fieldName "${c.fieldName}" which does not exist anywhere in the form`);
-			}
-		}
-	}
-
-	return {
-		id: parsed.id,
-		title: parsed.title,
-		description: parsed.description,
-		css: parsed.css,
-		buttons: parsed.buttons,
-		sections,
-	};
 }
 
 function validateFormSchema({ formSchemaJson }: { formSchemaJson: string }): string {
