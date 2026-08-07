@@ -54,7 +54,11 @@ const MOCK_WORKFLOW_NOTE =
 	'sections; how many times it currently repeats lives in the form DATA, not the schema, and resets to 1 ' +
 	'whenever the schema is replaced. (7) every field needs a non-empty, form-unique fieldName to be ' +
 	'included in form data or referenced by any condition - a field with an empty fieldName is display-only ' +
-	'and invisible to get_form_data/get_form_data_nested. ' +
+	'and invisible to get_form_data/get_form_data_nested. (8) for a condition referencing a CHECKBOXES ' +
+	'field, requiredValue is matched against that field\'s ENTIRE comma-joined value with a plain "==" - ' +
+	'there is no "contains this option" match, so requiredValue must be the exact full comma-joined string ' +
+	'(option order matters) currently selected, which is fragile; prefer conditioning on a radios/dropdown ' +
+	'field instead of a checkboxes field when possible. ' +
 	'If you have not already called describe_tools on this connection, call it first for this same context ' +
 	'plus the exact schema/data JSON shapes referenced below as "above".';
 
@@ -77,6 +81,15 @@ const MOCK_WORKFLOW_NOTE =
 	'radios/checkboxes/dropdown), "condition"?: {"fieldName": string, "requiredValue": string} (same rule ' +
 	'as section condition, evaluated against this field\'s own current repeat instance when inside a multi ' +
 	'section)}]}]}. ' +
+	'PER-TYPE "value" FORMAT (the schema field\'s default "value" and the form-data string stored for it ' +
+	'always follow the same format): text/number/textarea = plain string, unconstrained - "number" only picks ' +
+	'the rendered <input type=number>, the stored value is still an ordinary string, never coerced/validated ' +
+	'as numeric; date = "YYYY-MM-DD" (native HTML <input type=date> value format - always this ISO shape ' +
+	'regardless of locale, "" when empty); radios/dropdown = exactly ONE of that field\'s option "value"s ' +
+	'verbatim (or "" if nothing is selected yet) - never a list; checkboxes = a COMMA-JOINED string of every ' +
+	'currently selected option "value" with NO separating spaces (e.g. "eggs,toast,coffee", "" when none are ' +
+	'selected, "eggs" when exactly one is) - this is the one type where "value" is not a single option\'s ' +
+	'value, so build/parse it with split(",")/filter(Boolean).join(",") rather than treating it like radios. ' +
 	'EXACT FLAT FORM DATA SHAPE (get_form_data/set_form_data): {[key: string]: string} - every value is a ' +
 	'string (HTML form semantics), keyed by fieldName for fields in a non-multi section, by ' +
 	'"${fieldName}${repeatIndex}" (1-based) for fields inside a multi section, plus a bookkeeping key ' +
