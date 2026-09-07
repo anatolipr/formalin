@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "dependencies": {
+    "js-bridge-mcp": "^0.3.0"
+  },
   "scripts": {
     "vite:dev": "vite -c vite.configMain.js -c  vite.config3party.js  --port=4000",
     "build": "rm -rf dist && vite build -c vite.configMain.js && vite build -c vite.configMain2.js && vite build -c vite.configEdit.js && vite build -c vite.config3party.js",
