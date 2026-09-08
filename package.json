@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "dependencies": {
-    "js-bridge-mcp": "^0.4.0"
+    "js-bridge-mcp": "^0.4.5"
   },
   "scripts": {
     "vite:dev": "vite -c vite.configMain.js -c  vite.config3party.js  --port=4000",
