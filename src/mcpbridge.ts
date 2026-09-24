@@ -62,7 +62,12 @@ const MOCK_WORKFLOW_NOTE =
 	'If you have not already called describe_tools on this connection, call it first for this same context ' +
 	'plus the exact schema/data JSON shapes referenced below as "above".';
 
-(window as any).__mcpSummary =
+// js-bridge-mcp host for this dev environment - same convention operator-canvas's
+// canvas-shell.js uses (JSBRIDGE_MCP_HOST) - needed below to self-load tool-bus.js,
+// since formalin can't assume the page that embeds it already did.
+const JSBRIDGE_MCP_HOST = 'http://localhost:8766';
+
+const FORM_SUMMARY =
 	MOCK_WORKFLOW_NOTE +
 	' EXACT FORM SCHEMA SHAPE: {"id"?: string, "title"?: string, "description"?: string, "css"?: string ' +
 	'(raw CSS injected into the rendered form), "buttons"?: [{"type": string (e.g. "submit"/"reset"/ ' +
@@ -156,6 +161,12 @@ const MOCK_WORKFLOW_NOTE =
 	'selector but still beaten by any selector including a class), so border-related overrides need at ' +
 	'least one class in the selector to reliably win.';
 
+// Only claims window.__mcpSummary if no host page already set one first - formalin is an
+// embeddable widget that may share a page with a host that has its own, more page-relevant
+// summary (e.g. operator's checklist edit screen); on a page where formalin is the only script,
+// this is still the summary an agent sees, same as before.
+(window as any).__mcpSummary ??= FORM_SUMMARY;
+
 function readFormSchema(): string {
 	return JSON.stringify(form.get());
 }
@@ -228,7 +239,7 @@ function resetFormDataTool(): string {
 	return 'form data reset to schema defaults (same as reloading the form)';
 }
 
-(window as any).__mcpTools = [
+const FORM_TOOLS = [
 	{
 		name: 'get_form_schema',
 		description: `${MOCK_WORKFLOW_NOTE} Returns the WHOLE form schema (sections/fields/validation/` +
@@ -365,3 +376,32 @@ function resetFormDataTool(): string {
 		fn: resetFormDataTool,
 	},
 ];
+
+// Registers as a js-bridge-mcp tool-bus PROVIDER ("formalin"), never window.__mcpTools directly -
+// formalin is an embeddable widget that may share a host page with another script that owns that
+// slot (e.g. operator's checklist edit screen, which registers its own page-specific tools there).
+// Only one script per page can safely own window.__mcpTools (see js-bridge-mcp/BRIDGING.md); the
+// bus is exactly the mechanism for a second/third contributor to compose safely instead of
+// racing to overwrite it - see js-bridge-mcp/src/client/main.ts's currentPageTools(), which merges
+// window.__mcpTools with window.__mcpToolBus.getTools() regardless of load order.
+//
+// tool-bus.js's own load-order note (see its header comment) is written for a HOST page that
+// controls script ordering; formalin is only ever a guest on someone else's page and can't assume
+// the host imported tool-bus.js (or imported it before formalin's own script runs) - main.js does
+// self-load it once an MCP session actually connects, but that connection may happen well after
+// formalin's own top-level code has already run. So formalin self-loads it too, idempotently
+// (tool-bus.js's IIFE is `window.__mcpToolBus ??= ...`, safe to import twice) - whichever of the
+// host page, formalin, or main.js gets there first wins, the other two no-op.
+function registerFormalinTools(): void {
+	const bus = (window as any).__mcpToolBus;
+	if (!bus) return;
+	bus.registerProvider('formalin', FORM_TOOLS);
+}
+
+if ((window as any).__mcpToolBus) {
+	registerFormalinTools();
+} else {
+	import(/* @vite-ignore */ `${JSBRIDGE_MCP_HOST}/tool-bus.js`)
+		.then(registerFormalinTools)
+		.catch((err) => console.error('formalin: failed to load js-bridge-mcp tool bus', err));
+}
