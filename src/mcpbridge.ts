@@ -62,11 +62,6 @@ const MOCK_WORKFLOW_NOTE =
 	'If you have not already called describe_tools on this connection, call it first for this same context ' +
 	'plus the exact schema/data JSON shapes referenced below as "above".';
 
-// js-bridge-mcp host for this dev environment - same convention operator-canvas's
-// canvas-shell.js uses (JSBRIDGE_MCP_HOST) - needed below to self-load tool-bus.js,
-// since formalin can't assume the page that embeds it already did.
-const JSBRIDGE_MCP_HOST = 'http://localhost:8766';
-
 const FORM_SUMMARY =
 	MOCK_WORKFLOW_NOTE +
 	' EXACT FORM SCHEMA SHAPE: {"id"?: string, "title"?: string, "description"?: string, "css"?: string ' +
@@ -380,28 +375,84 @@ const FORM_TOOLS = [
 // Registers as a js-bridge-mcp tool-bus PROVIDER ("formalin"), never window.__mcpTools directly -
 // formalin is an embeddable widget that may share a host page with another script that owns that
 // slot (e.g. operator's checklist edit screen, which registers its own page-specific tools there).
-// Only one script per page can safely own window.__mcpTools (see js-bridge-mcp/BRIDGING.md); the
-// bus is exactly the mechanism for a second/third contributor to compose safely instead of
-// racing to overwrite it - see js-bridge-mcp/src/client/main.ts's currentPageTools(), which merges
-// window.__mcpTools with window.__mcpToolBus.getTools() regardless of load order.
+// The dashboard distinguishes these as "dynamic"/removable vs. the host page's own "host" tools,
+// which is the intended split (see js-bridge-mcp/src/client/main.ts's currentPageTools(), which
+// merges window.__mcpTools with window.__mcpToolBus.getTools() regardless of load order).
 //
-// tool-bus.js's own load-order note (see its header comment) is written for a HOST page that
-// controls script ordering; formalin is only ever a guest on someone else's page and can't assume
-// the host imported tool-bus.js (or imported it before formalin's own script runs) - main.js does
-// self-load it once an MCP session actually connects, but that connection may happen well after
-// formalin's own top-level code has already run. So formalin self-loads it too, idempotently
-// (tool-bus.js's IIFE is `window.__mcpToolBus ??= ...`, safe to import twice) - whichever of the
-// host page, formalin, or main.js gets there first wins, the other two no-op.
-function registerFormalinTools(): void {
-	const bus = (window as any).__mcpToolBus;
-	if (!bus) return;
-	bus.registerProvider('formalin', FORM_TOOLS);
-}
+// The bus itself (window.__mcpToolBus) is inlined here verbatim from js-bridge-mcp's own
+// tool-bus.js (a small, self-contained, provider-agnostic IIFE with no dependencies of its own -
+// see that file's header comment: it's explicitly meant to be importable by ANY embeddable
+// provider, not just from js-bridge-mcp's own server) rather than dynamically imported from
+// `${server}/tool-bus.js` over the network, which is what the earlier version of this file did.
+// That fetch is a cross-origin request from wherever formalin is embedded (e.g. the public
+// formalin.netlify.app origin) to the js-bridge-mcp server's local dev host, and unlike main.js's
+// own successful connection (a user-initiated, one-time DevTools paste), it never reliably
+// completed when triggered automatically from formalin's own page-load code - formalin's tools
+// registered fine wherever a bus already existed on the page (e.g. the checklist screen, already
+// connected earlier in a session) but never on a fresh, standalone load. Defining the bus inline
+// removes that network round trip entirely: `??=` means this is a no-op if a host page (or a later
+// real main.js self-load) already created an identically-shaped window.__mcpToolBus first - same
+// safe idempotency tool-bus.js's own version relies on.
+(window as any).__mcpToolBus ??= (() => {
+	const providers = new Map<string, unknown[]>(); // providerName -> tool[]
+	const listeners = new Set<() => void>();
 
-if ((window as any).__mcpToolBus) {
-	registerFormalinTools();
-} else {
-	import(/* @vite-ignore */ `${JSBRIDGE_MCP_HOST}/tool-bus.js`)
-		.then(registerFormalinTools)
-		.catch((err) => console.error('formalin: failed to load js-bridge-mcp tool bus', err));
-}
+	function notify(): void {
+		for (const cb of listeners) cb();
+	}
+
+	function getTools(): unknown[] {
+		// Auto-prefix on name collision across providers, mirroring js-bridge-mcp's own
+		// slug-suffix-on-collision pattern for connections.
+		const claimedBy = new Map<string, string>(); // tool name -> providerName that claimed it first
+		const out: unknown[] = [];
+		for (const [providerName, tools] of providers) {
+			for (const tool of tools as { name: string }[]) {
+				let name = tool.name;
+				if (claimedBy.has(name)) {
+					name = `${providerName}__${tool.name}`;
+				} else {
+					claimedBy.set(name, providerName);
+				}
+				out.push({ ...tool, name, source: 'dynamic' });
+			}
+		}
+		return out;
+	}
+
+	const bus = {
+		// Re-registering under the same providerName replaces its previous tool set.
+		registerProvider(providerName: string, tools: unknown[]) {
+			providers.set(providerName, tools);
+			notify();
+			return () => {
+				providers.delete(providerName);
+				notify();
+			};
+		},
+		// Sugar over registerProvider (own synthetic provider slot keyed by tool name,
+		// "tool:<name>") kept here too - main.js's register_page_tool_by_path/_by_code handlers
+		// call bus.registerTool(...) directly and would break if this bus (created here,
+		// possibly before main.js's own tool-bus.js self-load, which is a no-op once this
+		// already exists) didn't provide it.
+		registerTool(name: string, fn: (...args: unknown[]) => unknown, opts: { description?: string; params?: unknown; example?: unknown; origin?: unknown } = {}) {
+			const tool = {
+				name,
+				description: opts.description ?? '',
+				params: opts.params ?? {},
+				example: opts.example,
+				origin: opts.origin,
+				fn,
+			};
+			return bus.registerProvider(`tool:${name}`, [tool]);
+		},
+		getTools,
+		onChange(cb: () => void) {
+			listeners.add(cb);
+			return () => listeners.delete(cb);
+		},
+	};
+	return bus;
+})();
+
+(window as any).__mcpToolBus.registerProvider('formalin', FORM_TOOLS);
